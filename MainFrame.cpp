@@ -26,12 +26,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     wxMenuBar *menuBar = new wxMenuBar;
     menuBar->Append(menuCapitalizer, "&Capitalizer");
     SetMenuBar(menuBar);
-
+	
     wxToolBar *toolBar = CreateToolBar(wxTB_TEXT);
-    wxBitmap addIcon = wxArtProvider::GetBitmap(wxART_ADD_BOOKMARK);
-    wxBitmap dirIcon = wxArtProvider::GetBitmap(wxART_FILE_OPEN);
-    wxBitmap applyIcon = wxArtProvider::GetBitmap(wxART_TICK_MARK);
-    wxBitmap deleteIcon = wxArtProvider::GetBitmap(wxART_DELETE);
+    wxBitmap addIcon = wxArtProvider::GetBitmap(wxART_PLUS, wxART_TOOLBAR, wxSize(16, 16));
+    wxBitmap dirIcon = wxArtProvider::GetBitmap(wxART_FOLDER_OPEN, wxART_TOOLBAR, wxSize(16, 16));
+    wxBitmap deleteIcon = wxArtProvider::GetBitmap(wxART_DELETE, wxART_TOOLBAR, wxSize(16, 16));
+	wxBitmap applyIcon = wxArtProvider::GetBitmap(wxART_FILE_SAVE, wxART_TOOLBAR, wxSize(16, 16));
     toolBar->AddTool(TB_ADDFILE, "Add File(s)", addIcon, "Add File(s)"); 
     toolBar->AddTool(TB_ADDDIR, "Add Folder", dirIcon, "Add Folder");
     toolBar->AddSeparator();  
