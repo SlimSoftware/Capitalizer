@@ -11,7 +11,6 @@
 #include <wx/version.h> 
 #include "Capitalizer.h"
 #include "MainFrame.h"
-#include "icon.xpm"
 
 #include <vector>
 #include <string>
