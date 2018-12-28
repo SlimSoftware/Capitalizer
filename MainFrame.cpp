@@ -13,7 +13,6 @@
 #include "MainFrame.h"
 
 #include <vector>
-#include <string>
 
 wxListView *MainFrame::toRenameList;
 
