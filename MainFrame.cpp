@@ -94,22 +94,14 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
     wxDirDialog *openDirDialog = new wxDirDialog(this, "Choose a folder to add..."); 
     if (openDirDialog->ShowModal() == wxID_OK)
 	{
-        wxDir dir(openDirDialog->GetPath());
-        wxString dirName = dir.GetName();
-        wxArrayString files;
-        dir.GetAllFiles(openDirDialog->GetPath(), &files, wxEmptyString, wxDIR_FILES);
+        wxFileName dir(openDirDialog->GetPath());
+        wxString dirName = dir.GetFullName();
+        wxString newDirName = Capitalize(dirName);
 
-        for (wxString& file : files) {
-            wxFileName fn = wxFileNameFromPath(file);
-            // Remove the extention from the filename
-            wxString fileName = fn.GetName();
-            wxString newFileName = Capitalize(fileName);
-
-            long insertIndex = toRenameList->GetItemCount();
-            toRenameList->InsertItem(insertIndex, fileName);
-            toRenameList->SetItem(insertIndex, 1, newFileName);
-            toRenameList->SetItem(insertIndex, 2, file);
-        }
+        long insertIndex = toRenameList->GetItemCount();
+        toRenameList->InsertItem(insertIndex, dirName);
+        toRenameList->SetItem(insertIndex, 1, newDirName);
+        toRenameList->SetItem(insertIndex, 2, openDirDialog->GetPath());
 	}
  
 	openDirDialog->Destroy();
@@ -125,10 +117,8 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
 
         for (int i = 0; i < event.GetNumberOfFiles(); i++) {
             path = dropped[i];
-            if (wxFileExists(path))
-                paths.push_back(path);
-            else if (wxDirExists(path))
-                wxDir::GetAllFiles(path, &paths);                                   
+            if (wxFileExists(path) || wxDirExists(path))
+                paths.push_back(path);                                
         }
 
         for (int i = 0; i < event.GetNumberOfFiles(); i++) {
