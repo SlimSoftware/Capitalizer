@@ -14,15 +14,18 @@
 
 #include <vector>
 
+wxMenu *MainFrame::menuCapitalizer;
 wxListView *MainFrame::toRenameList;
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, wxID_ANY, title, pos, size)
 {
-    wxMenu *menuCapitalizer = new wxMenu;
+    menuCapitalizer = new wxMenu();
+    menuCapitalizer->AppendCheckItem(MENU_ALWAYS_ON_TOP, "Always on Top");
+    menuCapitalizer->AppendSeparator();
     menuCapitalizer->Append(wxID_ABOUT);
     menuCapitalizer->Append(wxID_EXIT);
-    wxMenuBar *menuBar = new wxMenuBar;
+    wxMenuBar *menuBar = new wxMenuBar();
     menuBar->Append(menuCapitalizer, "&Capitalizer");
     SetMenuBar(menuBar);
 	
@@ -54,6 +57,16 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     toRenameList->DragAcceptFiles(true);
     toRenameList->Connect(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::OnDropFiles), NULL, this);
     mainSizer->Add(toRenameList, 1, wxEXPAND);
+}
+
+void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)
+{
+    if (menuCapitalizer->IsChecked(MENU_ALWAYS_ON_TOP)) {
+        SetWindowStyle(wxSTAY_ON_TOP);
+    }
+    else {
+        SetWindowStyle(wxDEFAULT_FRAME_STYLE);
+    }   
 }
 
 void MainFrame::OnExit(wxCommandEvent& event)
@@ -221,6 +234,7 @@ void MainFrame::RenameAll(wxCommandEvent& event)
 }
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
+    EVT_MENU(MENU_ALWAYS_ON_TOP, MainFrame::OnAlwaysOnTopChanged)
     EVT_TOOL(TB_ADDFILE, MainFrame::OnAddFile)
     EVT_TOOL(TB_ADDDIR, MainFrame::OnAddDir)
     EVT_TOOL(TB_CAPITALIZE, MainFrame::RenameAll)

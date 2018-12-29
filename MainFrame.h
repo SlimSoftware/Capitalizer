@@ -15,6 +15,7 @@ public:
     MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 
 private:
+    void OnAlwaysOnTopChanged(wxCommandEvent& event);
     void OnAddFile(wxCommandEvent& event);
     void OnAddDir(wxCommandEvent& event);
     void OnDropFiles(wxDropFilesEvent& event);
@@ -26,6 +27,7 @@ private:
     void RenameAll(wxCommandEvent& event);
     wxDECLARE_EVENT_TABLE();
 
+    static wxMenu *menuCapitalizer;
     static wxListView *toRenameList;
 };
 
@@ -36,5 +38,6 @@ enum
     TB_ADDDIR,
     TB_CAPITALIZE,
     TB_DELETE,
-    TB_CLEAR
+    TB_CLEAR,
+    MENU_ALWAYS_ON_TOP
 };
