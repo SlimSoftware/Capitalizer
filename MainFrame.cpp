@@ -62,7 +62,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)
 {
     if (menuCapitalizer->IsChecked(MENU_ALWAYS_ON_TOP)) {
-        SetWindowStyle(wxSTAY_ON_TOP);
+        SetWindowStyle(wxDEFAULT_FRAME_STYLE | wxSTAY_ON_TOP);
     }
     else {
         SetWindowStyle(wxDEFAULT_FRAME_STYLE);
