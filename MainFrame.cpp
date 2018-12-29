@@ -45,10 +45,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     toRenameList = new wxListView(this);
     toRenameList->AppendColumn("Old Name");
     toRenameList->SetColumnWidth(0, 200); 
-    toRenameList->AppendColumn("New Name");    
+    toRenameList->AppendColumn("New Name");
     toRenameList->SetColumnWidth(1, 200); 
+    toRenameList->AppendColumn("Type");
+    toRenameList->SetColumnWidth(2, 75); 
     toRenameList->AppendColumn("Path");    
-    toRenameList->SetColumnWidth(2, 400); 
+    toRenameList->SetColumnWidth(3, 300); 
     toRenameList->DragAcceptFiles(true);
     toRenameList->Connect(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::OnDropFiles), NULL, this);
     mainSizer->Add(toRenameList, 1, wxEXPAND);
@@ -82,7 +84,8 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
             long insertIndex = toRenameList->GetItemCount();
             toRenameList->InsertItem(insertIndex, fileName);
             toRenameList->SetItem(insertIndex, 1, newFileName);
-            toRenameList->SetItem(insertIndex, 2, path);
+            toRenameList->SetItem(insertIndex, 2, "File");
+            toRenameList->SetItem(insertIndex, 3, path);
         }
 	}
  
@@ -101,7 +104,8 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
         long insertIndex = toRenameList->GetItemCount();
         toRenameList->InsertItem(insertIndex, dirName);
         toRenameList->SetItem(insertIndex, 1, newDirName);
-        toRenameList->SetItem(insertIndex, 2, openDirDialog->GetPath());
+        toRenameList->SetItem(insertIndex, 2, "Folder");
+        toRenameList->SetItem(insertIndex, 3, openDirDialog->GetPath());
 	}
  
 	openDirDialog->Destroy();
@@ -131,7 +135,14 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
             long insertIndex = toRenameList->GetItemCount();
             toRenameList->InsertItem(insertIndex, fileName);
             toRenameList->SetItem(insertIndex, 1, newFileName);
-            toRenameList->SetItem(insertIndex, 2, path);
+            if (wxFileExists(path)) {
+                toRenameList->SetItem(insertIndex, 2, "File");
+            } else if (wxDirExists(path)) {
+                toRenameList->SetItem(insertIndex, 2, "Folder");
+            } else {
+                toRenameList->SetItem(insertIndex, 2, "Unknown");
+            }
+            toRenameList->SetItem(insertIndex, 3, path);
         }
     }
 }
