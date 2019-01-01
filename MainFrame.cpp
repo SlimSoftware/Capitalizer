@@ -8,7 +8,8 @@
 #include <wx/artprov.h>
 #include <wx/dir.h>
 #include <wx/filename.h>
-#include <wx/version.h> 
+#include <wx/version.h>
+
 #include "Capitalizer.h"
 #include "MainFrame.h"
 
@@ -62,9 +63,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)
 {
     if (menuCapitalizer->IsChecked(MENU_ALWAYS_ON_TOP)) {
-        SetWindowStyle(wxSTAY_ON_TOP);
-    }
-    else {
+        SetWindowStyle(wxDEFAULT_FRAME_STYLE | wxSTAY_ON_TOP);
+    } else {
         SetWindowStyle(wxDEFAULT_FRAME_STYLE);
     }   
 }
@@ -85,8 +85,7 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
     wxFileDialog *openFileDialog = new wxFileDialog(this, "Choose a file to add...", 
         wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_MULTIPLE);
 
-    if (openFileDialog->ShowModal() == wxID_OK)
-	{
+    if (openFileDialog->ShowModal() == wxID_OK) {
         wxArrayString paths;
         openFileDialog->GetPaths(paths);
 
@@ -108,8 +107,7 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
 void MainFrame::OnAddDir(wxCommandEvent& event)
 {
     wxDirDialog *openDirDialog = new wxDirDialog(this, "Choose a folder to add..."); 
-    if (openDirDialog->ShowModal() == wxID_OK)
-	{
+    if (openDirDialog->ShowModal() == wxID_OK) {
         wxFileName dir(openDirDialog->GetPath());
         wxString dirName = dir.GetFullName();
         wxString newDirName = Capitalize(dirName);
@@ -134,8 +132,9 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
 
         for (int i = 0; i < event.GetNumberOfFiles(); i++) {
             path = dropped[i];
-            if (wxFileExists(path) || wxDirExists(path))
-                paths.push_back(path);                                
+			if (wxFileExists(path) || wxDirExists(path)) {
+				paths.push_back(path);
+			}
         }
 
         for (int i = 0; i < event.GetNumberOfFiles(); i++) {
@@ -164,12 +163,10 @@ wxString MainFrame::Capitalize(wxString stringToCapitalize)
 {
     wxString newString = stringToCapitalize;
 
-    if (newString.Contains(' '))
-    {
+    if (newString.Contains(' ')) {
         wxArrayString splitArray = wxSplit(newString, ' ');
 
-        for (wxString& string : splitArray)
-        {
+        for (wxString& string : splitArray) {
             string = string.Capitalize();
         }
         
@@ -184,11 +181,11 @@ wxString MainFrame::Capitalize(wxString stringToCapitalize)
 void MainFrame::OnDelete(wxCommandEvent& event)
 {
     long item = -1;
-    for (int i = 0; i < toRenameList->GetItemCount(); i++)
-    {
+    for (int i = 0; i < toRenameList->GetItemCount(); i++) {
         item = toRenameList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-        if ( item == -1 )
-            break;
+		if (item == -1) {
+			break;
+		}
         // This item is selected, so delete it
         toRenameList->DeleteItem(item);
     }
@@ -205,8 +202,7 @@ void MainFrame::RenameAll(wxCommandEvent& event)
     int succesfulRenamedFiles = 0;
     std::vector<int> toRemoveItemIndexes;
 
-    for (int i = 0; i < toRenameList->GetItemCount(); i++)
-    {
+    for (int i = 0; i < toRenameList->GetItemCount(); i++) {
         wxString oldName = toRenameList->GetItemText(i, 0);
         wxString newName = toRenameList->GetItemText(i, 1);
         wxString oldFilePath = toRenameList->GetItemText(i, 2); 
