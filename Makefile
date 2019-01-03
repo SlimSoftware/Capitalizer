@@ -18,4 +18,4 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/capitalizer
 
 clean:
-	rm *.o capitalizer
+	rm -f *.o capitalizer
