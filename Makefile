@@ -12,10 +12,10 @@ MainFrame.o:
 	g++ -c MainFrame.cpp $(WX_CXXFLAGS)
 
 install: capitalizer
-	cp $< $(DESTDIR)$(PREFIX)/bin
+	@cp $< $(DESTDIR)$(PREFIX)/bin
 
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/capitalizer
+	@rm -f $(DESTDIR)$(PREFIX)/bin/capitalizer
 
 clean:
-	rm -f *.o capitalizer
+	@rm -f *.o capitalizer
