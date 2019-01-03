@@ -12,7 +12,7 @@ MainFrame.o:
 	g++ -c MainFrame.cpp $(WX_CXXFLAGS)
 
 install: capitalizer
-    @mkdir -p $(DESTDIR)$(PREFIX)/bin
+	@mkdir -p $(DESTDIR)$(PREFIX)/bin
 	@cp $< $(DESTDIR)$(PREFIX)/bin
 
 uninstall:
