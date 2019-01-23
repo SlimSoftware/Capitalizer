@@ -205,7 +205,7 @@ void MainFrame::RenameAll(wxCommandEvent& event)
     for (int i = 0; i < toRenameList->GetItemCount(); i++) {
         wxString oldName = toRenameList->GetItemText(i, 0);
         wxString newName = toRenameList->GetItemText(i, 1);
-        wxString oldFilePath = toRenameList->GetItemText(i, 2); 
+        wxString oldFilePath = toRenameList->GetItemText(i, 3); 
         wxString newFilePath = oldFilePath;       
         newFilePath.Replace(oldName, newName);
 
