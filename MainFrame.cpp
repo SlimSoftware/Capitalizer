@@ -13,6 +13,10 @@
 #include "Capitalizer.h"
 #include "MainFrame.h"
 
+#include "img/add.xpm"
+#include "img/cross.xpm"
+#include "img/tick.xpm"
+
 #include <vector>
 
 wxMenu *MainFrame::menuCapitalizer;
@@ -31,12 +35,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     SetMenuBar(menuBar);
 	
     wxToolBar *toolBar = CreateToolBar(wxTB_TEXT);
-    wxBitmap addIcon = wxArtProvider::GetBitmap(wxART_PLUS, wxART_TOOLBAR, wxSize(16, 16));
-    wxBitmap dirIcon = wxArtProvider::GetBitmap(wxART_FOLDER_OPEN, wxART_TOOLBAR, wxSize(16, 16));
-    wxBitmap deleteIcon = wxArtProvider::GetBitmap(wxART_DELETE, wxART_TOOLBAR, wxSize(16, 16));
-	wxBitmap applyIcon = wxArtProvider::GetBitmap(wxART_FILE_SAVE, wxART_TOOLBAR, wxSize(16, 16));
-    toolBar->AddTool(TB_ADDFILE, "Add File(s)", addIcon, "Add File(s)"); 
-    toolBar->AddTool(TB_ADDDIR, "Add Folder", dirIcon, "Add Folder");
+    wxBitmap addBmp(add_xpm);
+    wxBitmap deleteIcon(cross_xpm);
+	wxBitmap applyIcon(tick_xpm);
+    toolBar->AddTool(TB_ADDFILE, "Add File(s)", addBmp, "Add File(s)"); 
+    toolBar->AddTool(TB_ADDDIR, "Add Folder", addBmp, "Add Folder");
     toolBar->AddSeparator();  
     toolBar->AddTool(TB_DELETE, "Delete Selected", deleteIcon, "Delete Selected");   
     toolBar->AddTool(TB_CLEAR, "Clear", deleteIcon, "Clear"); 
