@@ -13,7 +13,7 @@ MainFrame.o:
 
 install: capitalizer
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin
-	@cp $< $(DESTDIR)$(PREFIX)/bin
+	@cp -r $< $(DESTDIR)$(PREFIX)/bin
 
 uninstall:
 	@rm -f $(DESTDIR)$(PREFIX)/bin/capitalizer
