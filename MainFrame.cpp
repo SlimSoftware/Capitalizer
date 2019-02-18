@@ -8,6 +8,7 @@
 #include <wx/artprov.h>
 #include <wx/dir.h>
 #include <wx/filename.h>
+#include <wx/stdpaths.h>
 #include <wx/version.h>
 
 #include "Capitalizer.h"
@@ -22,6 +23,7 @@
 wxMenu *MainFrame::menuCapitalizer;
 wxListView *MainFrame::toRenameList;
 int selectedCapitalizeMode = 0;
+wxString lastOpenedDir = "";
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, wxID_ANY, title, pos, size)
@@ -95,7 +97,14 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
     wxFileDialog *openFileDialog = new wxFileDialog(this, "Choose a file to add...", 
         wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_MULTIPLE);
 
+    if (lastOpenedDir != "") {
+        openFileDialog->SetDirectory(lastOpenedDir);
+    } else {
+        openFileDialog->SetDirectory(wxStandardPaths::Get().GetDocumentsDir());
+    }
+
     if (openFileDialog->ShowModal() == wxID_OK) {
+        lastOpenedDir = openFileDialog->GetDirectory();
         wxArrayString paths;
         openFileDialog->GetPaths(paths);
 
@@ -117,7 +126,15 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
 void MainFrame::OnAddDir(wxCommandEvent& event)
 {
     wxDirDialog *openDirDialog = new wxDirDialog(this, "Choose a folder to add..."); 
+
+    if (lastOpenedDir != "") {
+        openDirDialog->SetPath(lastOpenedDir);
+    } else {
+        openDirDialog->SetPath(wxStandardPaths::Get().GetDocumentsDir());
+    }
+
     if (openDirDialog->ShowModal() == wxID_OK) {
+        lastOpenedDir = openDirDialog->GetPath();
         wxFileName dir(openDirDialog->GetPath());
         wxString dirName = dir.GetFullName();
         wxString newDirName = GetNewName(dirName);
