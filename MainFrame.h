@@ -21,9 +21,11 @@ private:
     void OnDropFiles(wxDropFilesEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
-    wxString Capitalize(wxString stringToCapitalize);
+    wxString GetNewName(wxString& oldName);
+    wxString Capitalize(wxString& stringToCapitalize);
     void OnDelete(wxCommandEvent& event);
     void OnClear(wxCommandEvent& event);
+    void OnModeChoiceChange(wxCommandEvent& event);
     void RenameAll(wxCommandEvent& event);
     wxDECLARE_EVENT_TABLE();
 
@@ -39,5 +41,6 @@ enum
     TB_CAPITALIZE,
     TB_DELETE,
     TB_CLEAR,
+    CH_MODE,
     MENU_ALWAYS_ON_TOP
 };

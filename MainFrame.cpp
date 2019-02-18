@@ -21,6 +21,7 @@
 
 wxMenu *MainFrame::menuCapitalizer;
 wxListView *MainFrame::toRenameList;
+int selectedCapitalizeMode = 0;
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, wxID_ANY, title, pos, size)
@@ -43,7 +44,13 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     toolBar->AddSeparator();  
     toolBar->AddTool(TB_DELETE, "Delete Selected", deleteIcon, "Delete Selected");   
     toolBar->AddTool(TB_CLEAR, "Clear", deleteIcon, "Clear"); 
-    toolBar->AddTool(TB_CAPITALIZE, "Capitalize", applyIcon, "Capitalize");     
+    toolBar->AddSeparator();
+
+    wxString modeChoices[] = {"Capitalize Every Word", "Like in a sentence", "all lowercase", "ALL UPPERCASE"};
+    wxChoice *modeChoice = new wxChoice(toolBar, CH_MODE, wxDefaultPosition, wxSize(200, -1), 4, modeChoices);  
+    modeChoice->SetSelection(0);
+    toolBar->AddControl(modeChoice, "Capitalize mode");
+    toolBar->AddTool(TB_CAPITALIZE, "Capitalize", applyIcon, "Capitalize");
     toolBar->Realize();
 
     wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -94,7 +101,7 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
 
         for (wxString path : paths) {
             wxString fileName = wxFileNameFromPath(path);
-            wxString newFileName = Capitalize(fileName);
+            wxString newFileName = GetNewName(fileName);
 
             long insertIndex = toRenameList->GetItemCount();
             toRenameList->InsertItem(insertIndex, fileName);
@@ -113,7 +120,7 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
     if (openDirDialog->ShowModal() == wxID_OK) {
         wxFileName dir(openDirDialog->GetPath());
         wxString dirName = dir.GetFullName();
-        wxString newDirName = Capitalize(dirName);
+        wxString newDirName = GetNewName(dirName);
 
         long insertIndex = toRenameList->GetItemCount();
         toRenameList->InsertItem(insertIndex, dirName);
@@ -145,7 +152,7 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
             wxFileName fn(wxFileNameFromPath(path));
             // Remove the extention from the filename
             wxString fileName = fn.GetName();
-            wxString newFileName = Capitalize(fileName);
+            wxString newFileName = GetNewName(fileName);
 
             long insertIndex = toRenameList->GetItemCount();
             toRenameList->InsertItem(insertIndex, fileName);
@@ -162,7 +169,34 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
     }
 }
 
-wxString MainFrame::Capitalize(wxString stringToCapitalize)
+wxString MainFrame::GetNewName(wxString& oldName) 
+{
+    // Capitalize
+    if (selectedCapitalizeMode == 0) {      
+        wxString newName = Capitalize(oldName);
+        return newName;
+    } 
+    // Like in a sentence
+    else if (selectedCapitalizeMode == 1) {
+        wxString newName = oldName;
+        newName.Capitalize();
+        return newName;
+    }
+    // Lowercase    
+    else if (selectedCapitalizeMode == 2) {
+        wxString newName = oldName;
+        newName.LowerCase();
+        return newName;
+    }
+    // Uppercase 
+    else if (selectedCapitalizeMode == 3) {
+        wxString newName = oldName;
+        newName.UpperCase();
+        return newName;
+    }
+}
+
+wxString MainFrame::Capitalize(wxString& stringToCapitalize)
 {
     wxString newString = stringToCapitalize;
 
@@ -197,6 +231,17 @@ void MainFrame::OnDelete(wxCommandEvent& event)
 void MainFrame::OnClear(wxCommandEvent& event)
 {
     toRenameList->DeleteAllItems();
+}
+
+void MainFrame::OnModeChoiceChange(wxCommandEvent& event) 
+{
+    selectedCapitalizeMode = event.GetSelection();
+    // Update all names in the new name column in listview
+    for (int i = 0; i < toRenameList->GetItemCount(); i++) {
+        wxString oldName = toRenameList->GetItemText(i, 0);
+        wxString newName = GetNewName(oldName);
+        toRenameList->SetItem(i, 1, newName);
+    }
 }
 
 void MainFrame::RenameAll(wxCommandEvent& event)
@@ -239,6 +284,7 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_TOOL(TB_CAPITALIZE, MainFrame::RenameAll)
     EVT_TOOL(TB_DELETE, MainFrame::OnDelete)
     EVT_TOOL(TB_CLEAR, MainFrame::OnClear)
+    EVT_CHOICE(CH_MODE, MainFrame::OnModeChoiceChange)
     EVT_MENU(wxID_EXIT, MainFrame::OnExit)
     EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 wxEND_EVENT_TABLE()
