@@ -345,3 +345,7 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/visualstudio
+
+# Object files and binary
+*.o
+capitalizer
