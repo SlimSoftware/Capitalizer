@@ -92,7 +92,7 @@ void MainFrame::OnExit(wxCommandEvent& event)
 
 void MainFrame::OnAbout(wxCommandEvent& event)
 {
-    wxMessageBox("Capitalizer v1.0.1 (" + wxPlatformInfo::Get().GetOperatingSystemIdName() + ")\n" + 
+    wxMessageBox("Capitalizer v1.1 (" + wxPlatformInfo::Get().GetOperatingSystemIdName() + ")\n" + 
         "Compiled using wxWidgets " + wxVERSION_NUM_DOT_STRING, "About", wxOK | wxICON_INFORMATION);
 }
 
