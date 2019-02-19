@@ -108,7 +108,6 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
     }
 
     if (openFileDialog->ShowModal() == wxID_OK) {
-        lastOpenedDir = openFileDialog->GetDirectory();
         wxArrayString paths;
         openFileDialog->GetPaths(paths);
 
@@ -122,6 +121,8 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
             toRenameList->SetItem(insertIndex, 2, "File");
             toRenameList->SetItem(insertIndex, 3, path);
         }
+
+		lastOpenedDir = openFileDialog->GetDirectory();
 	}
  
 	openFileDialog->Destroy();
@@ -138,9 +139,8 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
     }
 
     if (openDirDialog->ShowModal() == wxID_OK) {
-        lastOpenedDir = openDirDialog->GetPath();
         wxFileName dir(openDirDialog->GetPath());
-        wxString dirName = dir.GetFullName();
+        wxString dirName = dir.GetName();
         wxString newDirName = GetNewName(dirName);
 
         long insertIndex = toRenameList->GetItemCount();
@@ -148,6 +148,9 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
         toRenameList->SetItem(insertIndex, 1, newDirName);
         toRenameList->SetItem(insertIndex, 2, "Folder");
         toRenameList->SetItem(insertIndex, 3, openDirDialog->GetPath());
+
+		// Set last opened dir to parent folder of the added folder
+		lastOpenedDir = dir.GetPath();
 	}
  
 	openDirDialog->Destroy();
