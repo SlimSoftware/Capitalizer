@@ -200,7 +200,7 @@ wxString MainFrame::GetNewName(wxString& oldName)
     // Like in a sentence
     else if (selectedCapitalizeMode == 1) {
         wxString newName = oldName;
-        newName.Capitalize();
+        newName = newName.Capitalize();
         return newName;
     }
     // Lowercase    
