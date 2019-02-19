@@ -70,6 +70,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     toRenameList->DragAcceptFiles(true);
     toRenameList->Connect(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::OnDropFiles), NULL, this);
     mainSizer->Add(toRenameList, 1, wxEXPAND);
+
+    /* Set focus to toRenameList to prevent the first toolbar button automatically 
+       being focused when launching Capitalizer */
+    toRenameList->SetFocus();
 }
 
 void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)
