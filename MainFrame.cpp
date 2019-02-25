@@ -139,8 +139,8 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
     }
 
     if (openDirDialog->ShowModal() == wxID_OK) {
-        wxFileName dir(openDirDialog->GetPath());
-        wxString dirName = dir.GetName();
+        wxString path = openDirDialog->GetPath();
+        wxString dirName = path.AfterLast(wxFILE_SEP_PATH);
         wxString newDirName = GetNewName(dirName);
 
         long insertIndex = toRenameList->GetItemCount();
@@ -150,6 +150,7 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
         toRenameList->SetItem(insertIndex, 3, openDirDialog->GetPath());
 
 		// Set last opened dir to parent folder of the added folder
+        wxFileName dir(path);
 		lastOpenedDir = dir.GetPath();
 	}
  
@@ -173,14 +174,26 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
 
         for (int i = 0; i < event.GetNumberOfFiles(); i++) {
             wxString path = paths[i];
-            wxFileName fn(wxFileNameFromPath(path));
-            // Remove the extention from the filename
-            wxString fileName = fn.GetName();
-            wxString newFileName = GetNewName(fileName);
+            wxString oldName;
+            wxString newName;
+
+            // Check if the path leads to a file
+            if (wxFileExists(path)) {
+                wxFileName fn(path);
+                // Get the file name without extention
+                oldName = fn.GetName();
+
+                newName = GetNewName(oldName);
+            } else {
+                // Get dir name
+                oldName = path.AfterLast(wxFILE_SEP_PATH);
+                             
+                newName = GetNewName(oldName);
+            }
 
             long insertIndex = toRenameList->GetItemCount();
-            toRenameList->InsertItem(insertIndex, fileName);
-            toRenameList->SetItem(insertIndex, 1, newFileName);
+            toRenameList->InsertItem(insertIndex, oldName);
+            toRenameList->SetItem(insertIndex, 1, newName);
             if (wxFileExists(path)) {
                 toRenameList->SetItem(insertIndex, 2, "File");
             } else if (wxDirExists(path)) {
