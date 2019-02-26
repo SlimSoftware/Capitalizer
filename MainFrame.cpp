@@ -254,14 +254,11 @@ wxString MainFrame::Capitalize(wxString& stringToCapitalize)
 
 void MainFrame::OnDelete(wxCommandEvent& event)
 {
-    long item = -1;
-    for (int i = 0; i < toRenameList->GetItemCount(); i++) {
-        item = toRenameList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-		if (item == -1) {
-			break;
-		}
-        // This item is selected, so delete it
+    long item = toRenameList->GetFirstSelected();
+
+    while (item != -1) {
         toRenameList->DeleteItem(item);
+        item = toRenameList->GetNextSelected(item - 1);
     }
 }
 
