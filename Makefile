@@ -3,6 +3,7 @@ WX_LIBS = $(shell wx-config --libs)
 WX_CXXFLAGS = $(shell wx-config --cxxflags)
 PREFIX = /usr
 
+.PHONY: capitalizer
 capitalizer: Capitalizer.o MainFrame.o
 	g++ Capitalizer.o MainFrame.o $(WX_LIBS) -o capitalizer
 
