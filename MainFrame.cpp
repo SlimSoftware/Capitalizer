@@ -291,11 +291,19 @@ void MainFrame::RenameAll(wxCommandEvent& event)
     for (int i = 0; i < toRenameList->GetItemCount(); i++) {
         wxString oldName = toRenameList->GetItemText(i, 0);
         wxString newName = toRenameList->GetItemText(i, 1);
-        wxString oldPath = toRenameList->GetItemText(i, 3); 
-        wxString newPath = oldPath;       
-        newPath.Replace(oldName, newName);
+        bool renameSuccesful;
 
-        bool renameSuccesful = wxRenameFile(oldPath, newPath);        
+        if (newName == "(unchanged)") {
+            // Do not rename
+            renameSuccesful = true; 
+        } else {
+            wxString oldPath = toRenameList->GetItemText(i, 3); 
+            wxString newPath = oldPath;       
+            newPath.Replace(oldName, newName);
+
+            bool renameSuccesful = wxRenameFile(oldPath, newPath);  
+        }     
+
         if (renameSuccesful == true) {
             succesfulRenamedFiles++;
             toRemoveItemIndexes.push_back(i);
