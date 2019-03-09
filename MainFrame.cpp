@@ -115,11 +115,7 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
             wxString fileName = wxFileNameFromPath(path);
             wxString newFileName = GetNewName(fileName);
 
-            long insertIndex = toRenameList->GetItemCount();
-            toRenameList->InsertItem(insertIndex, fileName);
-            toRenameList->SetItem(insertIndex, 1, newFileName);
-            toRenameList->SetItem(insertIndex, 2, "File");
-            toRenameList->SetItem(insertIndex, 3, path);
+            InsertItem(fileName, newFileName, "File", path);
         }
 
 		lastOpenedDir = openFileDialog->GetDirectory();
@@ -143,11 +139,7 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
         wxString dirName = path.AfterLast(wxFILE_SEP_PATH);
         wxString newDirName = GetNewName(dirName);
 
-        long insertIndex = toRenameList->GetItemCount();
-        toRenameList->InsertItem(insertIndex, dirName);
-        toRenameList->SetItem(insertIndex, 1, newDirName);
-        toRenameList->SetItem(insertIndex, 2, "Folder");
-        toRenameList->SetItem(insertIndex, 3, openDirDialog->GetPath());
+        InsertItem(dirName, newDirName, "Folder", openDirDialog->GetPath());
 
 		// Set last opened dir to parent folder of the added folder
         wxFileName dir(path);
@@ -191,19 +183,27 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
                 newName = GetNewName(oldName);
             }
 
-            long insertIndex = toRenameList->GetItemCount();
-            toRenameList->InsertItem(insertIndex, oldName);
-            toRenameList->SetItem(insertIndex, 1, newName);
+            wxString type;
             if (wxFileExists(path)) {
-                toRenameList->SetItem(insertIndex, 2, "File");
+                type = "File";
             } else if (wxDirExists(path)) {
-                toRenameList->SetItem(insertIndex, 2, "Folder");
+                type = "Folder";
             } else {
-                toRenameList->SetItem(insertIndex, 2, "Unknown");
+                type = "Unknown";
             }
-            toRenameList->SetItem(insertIndex, 3, path);
+
+            InsertItem(oldName, newName, type, path);
         }
     }
+}
+
+void AddToRename(wxString& oldName, wxString& newName, wxString& type, wxString& path) 
+{
+    long insertIndex = toRenameList->GetItemCount();
+    toRenameList->InsertItem(insertIndex, oldName);
+    toRenameList->SetItem(insertIndex, 1, newName);
+    toRenameList->SetItem(insertIndex, 2, type);
+    toRenameList->SetItem(insertIndex, 3, path);
 }
 
 wxString MainFrame::GetNewName(wxString& oldName) 

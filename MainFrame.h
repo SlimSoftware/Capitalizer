@@ -19,6 +19,7 @@ private:
     void OnAddFile(wxCommandEvent& event);
     void OnAddDir(wxCommandEvent& event);
     void OnDropFiles(wxDropFilesEvent& event);
+    void AddToRename(wxString& oldName, wxString& newName, wxString& type, wxString& path);
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
     wxString GetNewName(wxString& oldName);
