@@ -115,7 +115,7 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
             wxString fileName = wxFileNameFromPath(path);
             wxString newFileName = GetNewName(fileName);
 
-            InsertItem(fileName, newFileName, "File", path);
+            AddToRename(fileName, newFileName, "File", path);
         }
 
 		lastOpenedDir = openFileDialog->GetDirectory();
@@ -139,7 +139,7 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
         wxString dirName = path.AfterLast(wxFILE_SEP_PATH);
         wxString newDirName = GetNewName(dirName);
 
-        InsertItem(dirName, newDirName, "Folder", openDirDialog->GetPath());
+        AddToRename(dirName, newDirName, "Folder", openDirDialog->GetPath());
 
 		// Set last opened dir to parent folder of the added folder
         wxFileName dir(path);
@@ -192,12 +192,12 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
                 type = "Unknown";
             }
 
-            InsertItem(oldName, newName, type, path);
+            AddToRename(oldName, newName, type, path);
         }
     }
 }
 
-void AddToRename(wxString& oldName, wxString& newName, wxString& type, wxString& path) 
+void MainFrame::AddToRename(wxString oldName, wxString newName, wxString type, wxString path) 
 {
     long insertIndex = toRenameList->GetItemCount();
     toRenameList->InsertItem(insertIndex, oldName);
@@ -208,27 +208,31 @@ void AddToRename(wxString& oldName, wxString& newName, wxString& type, wxString&
 
 wxString MainFrame::GetNewName(wxString& oldName) 
 {
+    wxString newName;
+
     // Capitalize
     if (selectedCapitalizeMode == 0) {      
-        wxString newName = Capitalize(oldName);
-        return newName;
+        newName = Capitalize(oldName);
     } 
     // Like in a sentence
     else if (selectedCapitalizeMode == 1) {
-        wxString newName = oldName;
+        newName = oldName;
         newName = newName.Capitalize();
-        return newName;
     }
     // Lowercase    
     else if (selectedCapitalizeMode == 2) {
-        wxString newName = oldName;
+        newName = oldName;
         newName.LowerCase();
-        return newName;
     }
     // Uppercase 
     else if (selectedCapitalizeMode == 3) {
-        wxString newName = oldName;
+        newName = oldName;
         newName.UpperCase();
+    }
+
+    if (oldName.IsSameAs(newName) == true) {      
+        return "(unchanged)";
+    } else {
         return newName;
     }
 }
