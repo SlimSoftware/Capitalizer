@@ -209,6 +209,9 @@ void MainFrame::AddToRename(wxString oldName, wxString newName, wxString type, w
     toRenameList->SetItem(insertIndex, 3, path);
 }
 
+/**
+	Returns the new name based on the specified name and the currently selected capitalization mode
+*/
 wxString MainFrame::GetNewName(wxString& oldName) 
 {
     wxString newName;
