@@ -105,7 +105,7 @@ void MainFrame::OnAbout(wxCommandEvent& event)
 		osName = "Other OS";
 	}
 
-    wxMessageBox("Capitalizer v1.1 (" + osName + ")\n" + 
+    wxMessageBox("Capitalizer v1.2 (" + osName + ")\n" + 
         "Compiled using wxWidgets " + wxVERSION_NUM_DOT_STRING, "About", wxOK | wxICON_INFORMATION);
 }
 
