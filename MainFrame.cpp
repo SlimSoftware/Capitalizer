@@ -197,6 +197,9 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
     }
 }
 
+/**
+	Adds an item to the listview
+*/
 void MainFrame::AddToRename(wxString oldName, wxString newName, wxString type, wxString path) 
 {
     long insertIndex = toRenameList->GetItemCount();
