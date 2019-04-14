@@ -49,8 +49,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     toolBar->AddSeparator();
 
 	wxString modeChoices[] = { "Capitalize Every Word", "Like in a sentence", "all lowercase",
-		"ALL UPPERCASE", "Remove extra spaces" };
-    wxChoice *modeChoice = new wxChoice(toolBar, CH_MODE, wxDefaultPosition, wxSize(200, -1), 5, modeChoices);  
+		"ALL UPPERCASE", "Remove extra spaces", "Replace underscores with spaces" };
+    wxChoice *modeChoice = new wxChoice(toolBar, CH_MODE, wxDefaultPosition, wxSize(200, -1), 6, modeChoices);  
     modeChoice->SetSelection(0);
     toolBar->AddControl(modeChoice, "Capitalize mode");
     toolBar->AddTool(TB_CAPITALIZE, "Capitalize", applyIcon, "Capitalize");
@@ -240,6 +240,10 @@ wxString MainFrame::GetNewName(wxString& oldName)
 	else if (selectedCapitalizeMode == 4) {
 		newName = RemoveExtraSpaces(oldName);
 	}
+	// Replace underscores with spaces
+	else if (selectedCapitalizeMode == 5) {
+		newName = UnderscoresToSpaces(oldName);
+	}
 
     if (oldName.IsSameAs(newName) == true) {      
         return "(unchanged)";
@@ -270,13 +274,21 @@ wxString MainFrame::Capitalize(wxString& stringToCapitalize)
 /**
 	Replaces two or more spaces with one space in the specified string and returns the result
 */
-wxString MainFrame::RemoveExtraSpaces(wxString& oldString) {
+wxString MainFrame::RemoveExtraSpaces(wxString& oldString) 
+{
 	wxString newString = oldString;
 
 	while (newString.Contains("  ")) {
 		newString.Replace("  ", " ");
 	}
 
+	return newString;
+}
+
+wxString MainFrame::UnderscoresToSpaces(wxString& oldString) 
+{
+	wxString newString = oldString;
+	newString.Replace("_", " ");
 	return newString;
 }
 
