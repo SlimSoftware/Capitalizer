@@ -325,7 +325,7 @@ void MainFrame::RenameAll(wxCommandEvent& event)
             wxString newPath = oldPath;       
             newPath.Replace(oldName, newName);
 
-            bool renameSuccesful = wxRenameFile(oldPath, newPath);  
+            renameSuccesful = wxRenameFile(oldPath, newPath);  
         }     
 
         if (renameSuccesful == true) {
