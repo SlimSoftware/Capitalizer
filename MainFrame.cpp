@@ -48,8 +48,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     toolBar->AddTool(TB_CLEAR, "Clear", deleteIcon, "Clear"); 
     toolBar->AddSeparator();
 
-    wxString modeChoices[] = {"Capitalize Every Word", "Like in a sentence", "all lowercase", "ALL UPPERCASE"};
-    wxChoice *modeChoice = new wxChoice(toolBar, CH_MODE, wxDefaultPosition, wxSize(200, -1), 4, modeChoices);  
+	wxString modeChoices[] = { "Capitalize Every Word", "Like in a sentence", "all lowercase",
+		"ALL UPPERCASE", "Remove extra spaces" };
+    wxChoice *modeChoice = new wxChoice(toolBar, CH_MODE, wxDefaultPosition, wxSize(200, -1), 5, modeChoices);  
     modeChoice->SetSelection(0);
     toolBar->AddControl(modeChoice, "Capitalize mode");
     toolBar->AddTool(TB_CAPITALIZE, "Capitalize", applyIcon, "Capitalize");
@@ -235,6 +236,10 @@ wxString MainFrame::GetNewName(wxString& oldName)
         newName = oldName;
         newName.UpperCase();
     }
+	// Remove double spaces
+	else if (selectedCapitalizeMode == 4) {
+		newName = RemoveExtraSpaces(oldName);
+	}
 
     if (oldName.IsSameAs(newName) == true) {      
         return "(unchanged)";
@@ -260,6 +265,19 @@ wxString MainFrame::Capitalize(wxString& stringToCapitalize)
     }
     
     return newString;
+}
+
+/**
+	Replaces two or more spaces with one space in the specified string and returns the result
+*/
+wxString MainFrame::RemoveExtraSpaces(wxString& oldString) {
+	wxString newString = oldString;
+
+	while (newString.Contains("  ")) {
+		newString.Replace("  ", " ");
+	}
+
+	return newString;
 }
 
 void MainFrame::OnDelete(wxCommandEvent& event)

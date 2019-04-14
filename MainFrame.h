@@ -24,6 +24,7 @@ private:
     void OnAbout(wxCommandEvent& event);
     wxString GetNewName(wxString& oldName);
     wxString Capitalize(wxString& stringToCapitalize);
+	wxString RemoveExtraSpaces(wxString & oldString);
     void OnDelete(wxCommandEvent& event);
     void OnClear(wxCommandEvent& event);
     void OnModeChoiceChange(wxCommandEvent& event);
