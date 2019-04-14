@@ -93,7 +93,19 @@ void MainFrame::OnExit(wxCommandEvent& event)
 
 void MainFrame::OnAbout(wxCommandEvent& event)
 {
-    wxMessageBox("Capitalizer v1.1 (" + wxPlatformInfo::Get().GetOperatingSystemIdName() + ")\n" + 
+	wxOperatingSystemId osID = wxPlatformInfo::Get().GetOperatingSystemId();
+	wxString osName;
+	if (osID == wxOS_WINDOWS_NT) {
+		osName = "Windows";
+	} else if (osID == wxOS_UNIX_LINUX) {
+		osName = "Linux";
+	} else if (osID == wxOS_MAC) {
+		osName = "Mac";
+	} else {
+		osName = "Other OS";
+	}
+
+    wxMessageBox("Capitalizer v1.1 (" + osName + ")\n" + 
         "Compiled using wxWidgets " + wxVERSION_NUM_DOT_STRING, "About", wxOK | wxICON_INFORMATION);
 }
 
