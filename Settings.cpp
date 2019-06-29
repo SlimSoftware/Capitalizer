@@ -18,12 +18,12 @@ static wxString lastOpenedDir;
 
 void Settings::Load() 
 {    
-    wxFileName configDir(wxStandardPaths::GetUserConfigDir());
+    wxFileName configDir(wxStandardPaths::Get().GetUserConfigDir());
     wxOperatingSystemId osID = wxPlatformInfo::Get().GetOperatingSystemId();
     if (osID != wxOS_UNIX) {
         configDir.AppendDir(".capitalizer");
     } else {
-        configDir.AppendDir("Capitalizer")
+        configDir.AppendDir("Capitalizer");
     }
 
     wxString configDirPath = configDir.GetPath();
