@@ -16,7 +16,7 @@ static int selectedCapitalizeMode;
 static bool restoreAlwaysOnTop;
 static wxString lastOpenedDir;
 
-static void Settings::Load() 
+void Settings::Load() 
 {    
     wxFileName configDir(wxStandardPaths::GetUserConfigDir());
     wxOperatingSystemId osID = wxPlatformInfo::Get().GetOperatingSystemId();
@@ -46,7 +46,7 @@ static void Settings::Load()
     }
 }
 
-static void Settings::Save()
+void Settings::Save()
 {
     json j = {
         {"selectedCapitalizeMode", selectedCapitalizeMode},
@@ -58,7 +58,7 @@ static void Settings::Save()
     o << std::setw(4) << j << std::endl;
 }
 
-static void Settings::SetDefault()
+void Settings::SetDefault()
 {
     selectedCapitalizeMode = 0;
     restoreAlwaysOnTop = true;
