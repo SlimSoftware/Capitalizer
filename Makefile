@@ -11,12 +11,15 @@ capitalizer: $(obj)
 %.o: %.cpp
 	g++ $(WX_CXXFLAGS) -c $< -o $@
 
+PHONY: install
 install: capitalizer
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin
 	@cp -r $< $(DESTDIR)$(PREFIX)/bin
 
+PHONY: uninstall
 uninstall:
 	@rm -f $(DESTDIR)$(PREFIX)/bin/capitalizer
 
+.PHONY: clean
 clean:
 	@rm -f *.o capitalizer
