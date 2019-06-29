@@ -5,24 +5,32 @@
 #include <wx/dir.h>
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
+#include <wx/utils.h> 
+
+#include <fstream>
+#include <iomanip>
 
 #include "include/json.hpp"
 
 #include "Settings.h"
 
-std::string configFilePath;
+using json = nlohmann::json;
+using namespace std;
 
-static int selectedCapitalizeMode;
-static bool restoreAlwaysOnTop;
-static wxString lastOpenedDir;
+string Settings::configFilePath;
+int Settings::selectedCapitalizeMode;
+bool Settings::restoreAlwaysOnTop;
+wxString Settings::lastOpenedDir;
 
 void Settings::Load() 
 {    
-    wxFileName configDir(wxStandardPaths::Get().GetUserConfigDir());
+    wxFileName configDir;
     wxOperatingSystemId osID = wxPlatformInfo::Get().GetOperatingSystemId();
-    if (osID != wxOS_UNIX) {
-        configDir.AppendDir(".capitalizer");
-    } else {
+    if (osID == wxOS_UNIX || osID == wxOS_UNIX_LINUX) {
+        configDir.SetPath(wxGetHomeDir());
+        configDir.AppendDir(".capitalizer");    
+    } else {   
+        configDir.SetPath(wxStandardPaths::Get().GetUserConfigDir());
         configDir.AppendDir("Capitalizer");
     }
 
@@ -31,16 +39,16 @@ void Settings::Load()
         wxDir::Make(configDirPath, 755);
     }
 
-    configFile(configDir);
+    wxFileName configFile(configDir);
     configFile.SetFullName("settings.json");
-    configFilePath = wxString::ToStdString(configFile.GetPath())
+    configFilePath = configFile.GetPath().ToStdString();
 
-    if (!wxFileExists(configFile)) {
+    if (!wxFileExists(configFile.GetPath())) {
         SetDefault();
         Save();
     } else {  
         // Read the settings file and store the content in a json object
-        std::ifstream i(configFilePath);
+        ifstream i(configFilePath);
         json j;
         i >> j;
     }
@@ -51,11 +59,11 @@ void Settings::Save()
     json j = {
         {"selectedCapitalizeMode", selectedCapitalizeMode},
         {"restoreAlwaysOnTop", restoreAlwaysOnTop},
-        {"lastOpenedDir", wxString::ToStdString(lastOpenedDir)}
+        {"lastOpenedDir", lastOpenedDir.ToStdString()}
     };
 
-    std::ofstream o(configFilePath);
-    o << std::setw(4) << j << std::endl;
+    ofstream o(configFilePath);
+    o << setw(4) << j << endl;
 }
 
 void Settings::SetDefault()

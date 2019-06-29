@@ -16,5 +16,5 @@ class Settings
     static wxString lastOpenedDir;
 
     private:
-    std::string configFilePath;
+    static std::string configFilePath;
 };
