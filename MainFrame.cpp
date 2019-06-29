@@ -13,6 +13,7 @@
 
 #include "Capitalizer.h"
 #include "MainFrame.h"
+#include "Settings.h"
 
 #include "img/add.xpm"
 #include "img/cross.xpm"
@@ -75,6 +76,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     /* Set focus to toRenameList to prevent the first toolbar button automatically 
        being focused when launching Capitalizer */
     toRenameList->SetFocus();
+
+    Settings::Load();
 }
 
 void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)

@@ -8,6 +8,8 @@
 
 #include "include/json.hpp"
 
+std::string configFilePath;
+
 static int selectedCapitalizeMode;
 static bool restoreAlwaysOnTop;
 static wxString lastOpenedDir;
@@ -27,23 +29,31 @@ static void Settings::Load()
         wxDir::Make(configDirPath, 755);
     }
 
-    wxFileName configFile(configDir);
+    configFile(configDir);
     configFile.SetFullName("settings.json");
+    configFilePath = wxString::ToStdString(configFile.GetPath())
+
     if (!wxFileExists(configFile)) {
-        Settings::SetDefault();
-        Settings::Save();
-        return;
+        SetDefault();
+        Save();
+    } else {  
+        // Read the settings file and store the content in a json object
+        std::ifstream i(configFilePath);
+        json j;
+        i >> j;
     }
-    
-    // Read the settings file and save the content in a json object
-    std::ifstream i(wxString::ToStdString(configFile.GetPath()));
-    json j;
-    i >> j;
 }
 
 static void Settings::Save()
 {
+    json j = {
+        {"selectedCapitalizeMode", selectedCapitalizeMode},
+        {"restoreAlwaysOnTop", restoreAlwaysOnTop},
+        {"lastOpenedDir", wxString::ToStdString(lastOpenedDir)}
+    };
 
+    std::ofstream o(configFilePath);
+    o << std::setw(4) << j << std::endl;
 }
 
 static void Settings::SetDefault()
