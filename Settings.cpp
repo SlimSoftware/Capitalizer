@@ -8,6 +8,8 @@
 
 #include "include/json.hpp"
 
+#include "Settings.h"
+
 std::string configFilePath;
 
 static int selectedCapitalizeMode;
