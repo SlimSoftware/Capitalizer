@@ -36,7 +36,7 @@ void Settings::Load()
 
     wxString configDirPath = configDir.GetPath();
     if (!wxDirExists(configDirPath)) {
-        wxDir::Make(configDirPath, 755);
+        configDir.Mkdir();
     }
 
     wxFileName configFile(configDir);
