@@ -1,16 +1,15 @@
 CXX = $(shell wx-config --cxx)
 WX_LIBS = $(shell wx-config --libs)
 WX_CXXFLAGS = $(shell wx-config --cxxflags)
+src = $(wildcard *.cpp)
+obj = $(src:.cpp=.o)
 PREFIX = /usr
 
-.PHONY: capitalizer
-capitalizer: Capitalizer.o MainFrame.o
-	g++ Capitalizer.o MainFrame.o $(WX_LIBS) -o capitalizer
+capitalizer: $(obj)
+	g++ -o $@ $+ $(WX_LIBS)
 
-Capitalizer.o:
-	g++ -c Capitalizer.cpp $(WX_CXXFLAGS)
-MainFrame.o:
-	g++ -c MainFrame.cpp $(WX_CXXFLAGS)
+%.o: %.cpp
+	g++ $(WX_CXXFLAGS) -c $< -o $@
 
 install: capitalizer
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin
