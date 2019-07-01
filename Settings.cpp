@@ -29,7 +29,11 @@ void Settings::Load()
     if (osID == wxOS_UNIX || osID == wxOS_UNIX_LINUX) {
         configDir.SetPath(wxGetHomeDir());
         configDir.AppendDir(".capitalizer");    
-    } else {   
+	} else if (osID == wxOS_WINDOWS_NT) {
+		configDir.SetPath(wxStandardPaths::Get().GetUserConfigDir());
+		configDir.AppendDir("Slim Software");
+		configDir.AppendDir("Capitalizer");
+	} else {   
         configDir.SetPath(wxStandardPaths::Get().GetUserConfigDir());
         configDir.AppendDir("Capitalizer");
     }
