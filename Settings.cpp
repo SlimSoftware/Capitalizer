@@ -45,9 +45,9 @@ void Settings::Load()
 
     wxFileName configFile(configDir);
     configFile.SetFullName("settings.json");
-    configFilePath = configFile.GetPath().ToStdString();
+    configFilePath = configFile.GetFullPath().ToStdString();
 
-    if (!wxFileExists(configFile.GetPath())) {
+    if (!wxFileExists(configFile.GetFullPath())) {
         SetDefault();
         Save();
     } else {  
