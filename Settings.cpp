@@ -58,7 +58,8 @@ void Settings::Load()
 
 		selectedCapitalizeMode = j["selectedCapitalizeMode"];
 		restoreAlwaysOnTop = j["restoreAlwaysOnTop"];
-		lastOpenedDir = wxString((string)j["lastOpenedDir"]);
+		wxString lastOpenedDirWxString = j["lastOpenedDir"].get<string>();
+		lastOpenedDir = lastOpenedDirWxString;
     }
 }
 
