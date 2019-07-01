@@ -55,6 +55,10 @@ void Settings::Load()
         ifstream i(configFilePath);
         json j;
         i >> j;
+
+		selectedCapitalizeMode = j["selectedCapitalizeMode"];
+		restoreAlwaysOnTop = j["restoreAlwaysOnTop"];
+		lastOpenedDir = wxString((string)j["lastOpenedDir"]);
     }
 }
 
