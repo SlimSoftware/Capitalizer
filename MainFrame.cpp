@@ -23,8 +23,6 @@
 
 wxMenu *MainFrame::menuCapitalizer;
 wxListView *MainFrame::toRenameList;
-int selectedCapitalizeMode = 0;
-wxString lastOpenedDir = "";
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, wxID_ANY, title, pos, size)
@@ -54,7 +52,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	wxString modeChoices[] = { "Capitalize Every Word", "Like in a sentence", "all lowercase",
 		"ALL UPPERCASE", "Remove extra spaces", "Replace underscores with spaces" };
     wxChoice *modeChoice = new wxChoice(toolBar, CH_MODE, wxDefaultPosition, wxSize(200, -1), 6, modeChoices);  
-    modeChoice->SetSelection(0);
+    modeChoice->SetSelection(settings::selectedCapitalizeMode);
     toolBar->AddControl(modeChoice, "Capitalize mode");
     toolBar->AddTool(TB_CAPITALIZE, "Capitalize", applyIcon, "Capitalize");
     toolBar->Realize();
@@ -89,9 +87,15 @@ void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)
     }   
 }
 
+void MainFrame::OnClose(wxCloseEvent& event)
+{
+	settings::Save();
+	Destroy();
+}
+
 void MainFrame::OnExit(wxCommandEvent& event)
 {
-    Close(true);
+	Close(true);
 }
 
 void MainFrame::OnAbout(wxCommandEvent& event)
@@ -117,8 +121,8 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
     wxFileDialog *openFileDialog = new wxFileDialog(this, "Choose a file to add...", 
         wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_MULTIPLE);
 
-    if (lastOpenedDir != "") {
-        openFileDialog->SetDirectory(lastOpenedDir);
+    if (settings::lastOpenedDir != "") {
+        openFileDialog->SetDirectory(settings::lastOpenedDir);
     } else {
         openFileDialog->SetDirectory(wxStandardPaths::Get().GetDocumentsDir());
     }
@@ -134,7 +138,7 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
             AddToRename(fileName, newFileName, "File", path);
         }
 
-		lastOpenedDir = openFileDialog->GetDirectory();
+		settings::lastOpenedDir = openFileDialog->GetDirectory();
 	}
  
 	openFileDialog->Destroy();
@@ -144,8 +148,8 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
 {
     wxDirDialog *openDirDialog = new wxDirDialog(this, "Choose a folder to add..."); 
 
-    if (lastOpenedDir != "") {
-        openDirDialog->SetPath(lastOpenedDir);
+    if (settings::lastOpenedDir != "") {
+        openDirDialog->SetPath(settings::lastOpenedDir);
     } else {
         openDirDialog->SetPath(wxStandardPaths::Get().GetDocumentsDir());
     }
@@ -159,7 +163,7 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
 
 		// Set last opened dir to parent folder of the added folder
         wxFileName dir(path);
-		lastOpenedDir = dir.GetPath();
+		settings::lastOpenedDir = dir.GetPath();
 	}
  
 	openDirDialog->Destroy();
@@ -233,30 +237,30 @@ wxString MainFrame::GetNewName(wxString& oldName)
     wxString newName;
 
     // Capitalize
-    if (selectedCapitalizeMode == 0) {      
+    if (settings::selectedCapitalizeMode == 0) {      
         newName = Capitalize(oldName);
     } 
     // Like in a sentence
-    else if (selectedCapitalizeMode == 1) {
+    else if (settings::selectedCapitalizeMode == 1) {
         newName = oldName;
         newName = newName.Capitalize();
     }
     // Lowercase    
-    else if (selectedCapitalizeMode == 2) {
+    else if (settings::selectedCapitalizeMode == 2) {
         newName = oldName;
         newName.LowerCase();
     }
     // Uppercase 
-    else if (selectedCapitalizeMode == 3) {
+    else if (settings::selectedCapitalizeMode == 3) {
         newName = oldName;
         newName.UpperCase();
     }
 	// Remove double spaces
-	else if (selectedCapitalizeMode == 4) {
+	else if (settings::selectedCapitalizeMode == 4) {
 		newName = RemoveExtraSpaces(oldName);
 	}
 	// Replace underscores with spaces
-	else if (selectedCapitalizeMode == 5) {
+	else if (settings::selectedCapitalizeMode == 5) {
 		newName = UnderscoresToSpaces(oldName);
 	}
 
@@ -324,7 +328,8 @@ void MainFrame::OnClear(wxCommandEvent& event)
 
 void MainFrame::OnModeChoiceChange(wxCommandEvent& event) 
 {
-    selectedCapitalizeMode = event.GetSelection();
+	settings::selectedCapitalizeMode = event.GetSelection();
+
     // Update all names in the new name column in listview
     for (int i = 0; i < toRenameList->GetItemCount(); i++) {
         wxString oldName = toRenameList->GetItemText(i, 0);
@@ -383,6 +388,7 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_TOOL(TB_CLEAR, MainFrame::OnClear)
     EVT_CHOICE(CH_MODE, MainFrame::OnModeChoiceChange)
     EVT_MENU(wxID_EXIT, MainFrame::OnExit)
+	EVT_CLOSE(MainFrame::OnClose)
     EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 wxEND_EVENT_TABLE()
 wxIMPLEMENT_APP(Capitalizer);

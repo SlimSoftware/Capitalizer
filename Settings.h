@@ -16,7 +16,7 @@ namespace settings {
 	void Save();
 	void SetDefault();
 	
-	static int selectedCapitalizeMode;
-	static bool restoreAlwaysOnTop;
-	static wxString lastOpenedDir;
+	extern int selectedCapitalizeMode;
+	extern bool restoreAlwaysOnTop;
+	extern wxString lastOpenedDir;
 }

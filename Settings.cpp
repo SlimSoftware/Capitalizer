@@ -18,6 +18,10 @@ using json = nlohmann::json;
 using namespace std;
 
 namespace settings {
+	int selectedCapitalizeMode = 0;
+	bool restoreAlwaysOnTop = true;
+	wxString lastOpenedDir = "";
+
 	void Load()
 	{
 		wxFileName configDir;
@@ -46,7 +50,6 @@ namespace settings {
 		configFilePath = configFile.GetFullPath().ToStdString();
 
 		if (!wxFileExists(configFile.GetFullPath())) {
-			SetDefault();
 			Save();
 		}
 		else {
