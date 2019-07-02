@@ -29,6 +29,8 @@ wxString lastOpenedDir = "";
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, wxID_ANY, title, pos, size)
 {
+	settings::Load();
+
     menuCapitalizer = new wxMenu();
     menuCapitalizer->AppendCheckItem(MENU_ALWAYS_ON_TOP, "Always on Top");
     menuCapitalizer->AppendSeparator();
@@ -76,8 +78,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     /* Set focus to toRenameList to prevent the first toolbar button automatically 
        being focused when launching Capitalizer */
     toRenameList->SetFocus();
-
-    Settings::Load();
 }
 
 void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)

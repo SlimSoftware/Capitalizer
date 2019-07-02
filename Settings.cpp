@@ -17,67 +17,72 @@
 using json = nlohmann::json;
 using namespace std;
 
-string Settings::configFilePath;
-int Settings::selectedCapitalizeMode;
-bool Settings::restoreAlwaysOnTop;
-wxString Settings::lastOpenedDir;
+namespace settings {
+	string configFilePath;
+	int selectedCapitalizeMode;
+	bool restoreAlwaysOnTop;
+	wxString lastOpenedDir;
 
-void Settings::Load() 
-{    
-    wxFileName configDir;
-    wxOperatingSystemId osID = wxPlatformInfo::Get().GetOperatingSystemId();
-    if (osID == wxOS_UNIX || osID == wxOS_UNIX_LINUX) {
-        configDir.SetPath(wxGetHomeDir());
-        configDir.AppendDir(".capitalizer");    
-	} else if (osID == wxOS_WINDOWS_NT) {
-		configDir.SetPath(wxStandardPaths::Get().GetUserConfigDir());
-		configDir.AppendDir("Slim Software");
-		configDir.AppendDir("Capitalizer");
-	} else {   
-        configDir.SetPath(wxStandardPaths::Get().GetUserConfigDir());
-        configDir.AppendDir("Capitalizer");
-    }
+	void Load()
+	{
+		wxFileName configDir;
+		wxOperatingSystemId osID = wxPlatformInfo::Get().GetOperatingSystemId();
+		if (osID == wxOS_UNIX || osID == wxOS_UNIX_LINUX) {
+			configDir.SetPath(wxGetHomeDir());
+			configDir.AppendDir(".capitalizer");
+		}
+		else if (osID == wxOS_WINDOWS_NT) {
+			configDir.SetPath(wxStandardPaths::Get().GetUserConfigDir());
+			configDir.AppendDir("Slim Software");
+			configDir.AppendDir("Capitalizer");
+		}
+		else {
+			configDir.SetPath(wxStandardPaths::Get().GetUserConfigDir());
+			configDir.AppendDir("Capitalizer");
+		}
 
-    wxString configDirPath = configDir.GetPath();
-    if (!wxDirExists(configDirPath)) {
-        configDir.Mkdir();
-    }
+		wxString configDirPath = configDir.GetPath();
+		if (!wxDirExists(configDirPath)) {
+			configDir.Mkdir();
+		}
 
-    wxFileName configFile(configDir);
-    configFile.SetFullName("settings.json");
-    configFilePath = configFile.GetFullPath().ToStdString();
+		wxFileName configFile(configDir);
+		configFile.SetFullName("settings.json");
+		configFilePath = configFile.GetFullPath().ToStdString();
 
-    if (!wxFileExists(configFile.GetFullPath())) {
-        SetDefault();
-        Save();
-    } else {  
-        // Read the settings file and store the content in a json object
-        ifstream i(configFilePath);
-        json j;
-        i >> j;
+		if (!wxFileExists(configFile.GetFullPath())) {
+			SetDefault();
+			Save();
+		}
+		else {
+			// Read the settings file and store the content in a json object
+			ifstream i(configFilePath);
+			json j;
+			i >> j;
 
-		selectedCapitalizeMode = j["selectedCapitalizeMode"];
-		restoreAlwaysOnTop = j["restoreAlwaysOnTop"];
-		wxString lastOpenedDirWxString = j["lastOpenedDir"].get<string>();
-		lastOpenedDir = lastOpenedDirWxString;
-    }
-}
+			selectedCapitalizeMode = j["selectedCapitalizeMode"];
+			restoreAlwaysOnTop = j["restoreAlwaysOnTop"];
+			wxString lastOpenedDirWxString = j["lastOpenedDir"].get<string>();
+			lastOpenedDir = lastOpenedDirWxString;
+		}
+	}
 
-void Settings::Save()
-{
-    json j = {
-        {"selectedCapitalizeMode", selectedCapitalizeMode},
-        {"restoreAlwaysOnTop", restoreAlwaysOnTop},
-        {"lastOpenedDir", lastOpenedDir.ToStdString()}
-    };
+	void Save()
+	{
+		json j = {
+			{"selectedCapitalizeMode", selectedCapitalizeMode},
+			{"restoreAlwaysOnTop", restoreAlwaysOnTop},
+			{"lastOpenedDir", lastOpenedDir.ToStdString()}
+		};
 
-    ofstream o(configFilePath);
-    o << setw(4) << j << endl;
-}
+		ofstream o(configFilePath);
+		o << setw(4) << j << endl;
+	}
 
-void Settings::SetDefault()
-{
-    selectedCapitalizeMode = 0;
-    restoreAlwaysOnTop = true;
-    lastOpenedDir = "";
+	void SetDefault()
+	{
+		selectedCapitalizeMode = 0;
+		restoreAlwaysOnTop = true;
+		lastOpenedDir = "";
+	}
 }

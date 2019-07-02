@@ -4,17 +4,16 @@
 #endif
 #include <wx/filename.h>
 
-class Settings 
-{
-    public:
-    static void Load();
-    static void Save();
-    static void SetDefault();
-    
-    static int selectedCapitalizeMode;
-    static bool restoreAlwaysOnTop;
-    static wxString lastOpenedDir;
+// Private namespace
+namespace {
+	std::string configFilePath;
+}
 
-    private:
-    static std::string configFilePath;
-};
+namespace settings {
+	void Load();
+	void Save();
+	void SetDefault();
+	int selectedCapitalizeMode;
+	bool restoreAlwaysOnTop;
+	wxString lastOpenedDir;
+}
