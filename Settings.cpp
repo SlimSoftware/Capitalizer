@@ -56,12 +56,21 @@ namespace settings {
 			// Read the settings file and store the content in a json object
 			ifstream i(configFilePath);
 			json j;
-			i >> j;
 
-			selectedCapitalizeMode = j["selectedCapitalizeMode"];
-			restoreAlwaysOnTop = j["restoreAlwaysOnTop"];
-			wxString lastOpenedDirWxString = j["lastOpenedDir"].get<string>();
-			lastOpenedDir = lastOpenedDirWxString;
+			try {
+				i >> j;
+
+				selectedCapitalizeMode = j["selectedCapitalizeMode"];
+				restoreAlwaysOnTop = j["restoreAlwaysOnTop"];
+				wxString lastOpenedDirWxString = j["lastOpenedDir"].get<string>();
+				lastOpenedDir = lastOpenedDirWxString;
+			}
+			catch (json::exception& ex) {
+				// Reset the json file with the default settings
+				SetDefault();
+				Save();
+				return;
+			}
 		}
 	}
 
