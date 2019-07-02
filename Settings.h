@@ -1,3 +1,5 @@
+#pragma once
+
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
@@ -13,7 +15,8 @@ namespace settings {
 	void Load();
 	void Save();
 	void SetDefault();
-	int selectedCapitalizeMode;
-	bool restoreAlwaysOnTop;
-	wxString lastOpenedDir;
+	
+	static int selectedCapitalizeMode;
+	static bool restoreAlwaysOnTop;
+	static wxString lastOpenedDir;
 }

@@ -18,11 +18,6 @@ using json = nlohmann::json;
 using namespace std;
 
 namespace settings {
-	string configFilePath;
-	int selectedCapitalizeMode;
-	bool restoreAlwaysOnTop;
-	wxString lastOpenedDir;
-
 	void Load()
 	{
 		wxFileName configDir;
