@@ -18,10 +18,13 @@
     <ClCompile Include="..\Capitalizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\MainFrame.cpp">
+    <ClCompile Include="..\Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Settings.cpp">
+    <ClCompile Include="..\SettingsDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,10 +37,13 @@
     <ClInclude Include="..\Capitalizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\MainFrame.h">
+    <ClInclude Include="..\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Settings.h">
+    <ClInclude Include="..\SettingsDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

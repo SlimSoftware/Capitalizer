@@ -130,16 +130,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Capitalizer.cpp" />
-    <ClCompile Include="..\MainFrame.cpp" />
+    <ClCompile Include="..\MainWindow.cpp" />
     <ClCompile Include="..\Settings.cpp" />
+    <ClCompile Include="..\SettingsDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\resources.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Capitalizer.h" />
-    <ClInclude Include="..\MainFrame.h" />
+    <ClInclude Include="..\MainWindow.h" />
     <ClInclude Include="..\Settings.h" />
+    <ClInclude Include="..\SettingsDialog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
