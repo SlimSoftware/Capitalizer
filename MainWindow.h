@@ -9,10 +9,10 @@
 
 #include "Capitalizer.h"
 
-class MainFrame: public wxFrame
+class MainWindow: public wxFrame
 {
 public:
-    MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+    MainWindow(const wxString& title, const wxPoint& pos, const wxSize& size);
 
 private:
     void OnAlwaysOnTopChanged(wxCommandEvent& event);

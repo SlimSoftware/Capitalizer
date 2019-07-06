@@ -12,7 +12,7 @@
 #include <wx/version.h>
 
 #include "Capitalizer.h"
-#include "MainFrame.h"
+#include "MainWindow.h"
 #include "Settings.h"
 
 #include "img/add.xpm"
@@ -21,10 +21,10 @@
 
 #include <vector>
 
-wxMenu *MainFrame::menuCapitalizer;
-wxListView *MainFrame::toRenameList;
+wxMenu *MainWindow::menuCapitalizer;
+wxListView *MainWindow::toRenameList;
 
-MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
+MainWindow::MainWindow(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, wxID_ANY, title, pos, size)
 {
 	settings::Load();
@@ -70,7 +70,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     toRenameList->AppendColumn("Path");    
     toRenameList->SetColumnWidth(3, 300); 
     toRenameList->DragAcceptFiles(true);
-    toRenameList->Connect(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::OnDropFiles), NULL, this);
+    toRenameList->Connect(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainWindow::OnDropFiles), NULL, this);
     mainSizer->Add(toRenameList, 1, wxEXPAND);
 
     /* Set focus to toRenameList to prevent the first toolbar button automatically 
@@ -78,7 +78,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     toRenameList->SetFocus();
 }
 
-void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)
+void MainWindow::OnAlwaysOnTopChanged(wxCommandEvent& event)
 {
     if (menuCapitalizer->IsChecked(MENU_ALWAYS_ON_TOP)) {
         SetWindowStyle(wxDEFAULT_FRAME_STYLE | wxSTAY_ON_TOP);
@@ -87,18 +87,18 @@ void MainFrame::OnAlwaysOnTopChanged(wxCommandEvent& event)
     }   
 }
 
-void MainFrame::OnClose(wxCloseEvent& event)
+void MainWindow::OnClose(wxCloseEvent& event)
 {
 	settings::Save();
 	Destroy();
 }
 
-void MainFrame::OnExit(wxCommandEvent& event)
+void MainWindow::OnExit(wxCommandEvent& event)
 {
 	Close(true);
 }
 
-void MainFrame::OnAbout(wxCommandEvent& event)
+void MainWindow::OnAbout(wxCommandEvent& event)
 {
 	wxOperatingSystemId osID = wxPlatformInfo::Get().GetOperatingSystemId();
 	wxString osName;
@@ -116,7 +116,7 @@ void MainFrame::OnAbout(wxCommandEvent& event)
         "Compiled using wxWidgets " + wxVERSION_NUM_DOT_STRING, "About", wxOK | wxICON_INFORMATION);
 }
 
-void MainFrame::OnAddFile(wxCommandEvent& event)
+void MainWindow::OnAddFile(wxCommandEvent& event)
 {
     wxFileDialog *openFileDialog = new wxFileDialog(this, "Choose a file to add...", 
         wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_MULTIPLE);
@@ -144,7 +144,7 @@ void MainFrame::OnAddFile(wxCommandEvent& event)
 	openFileDialog->Destroy();
 }
 
-void MainFrame::OnAddDir(wxCommandEvent& event)
+void MainWindow::OnAddDir(wxCommandEvent& event)
 {
     wxDirDialog *openDirDialog = new wxDirDialog(this, "Choose a folder to add..."); 
 
@@ -169,7 +169,7 @@ void MainFrame::OnAddDir(wxCommandEvent& event)
 	openDirDialog->Destroy();
 }
 
-void MainFrame::OnDropFiles(wxDropFilesEvent& event)    
+void MainWindow::OnDropFiles(wxDropFilesEvent& event)    
 {
     if (event.GetNumberOfFiles() > 0) {
         wxString* dropped = event.GetFiles();
@@ -220,7 +220,7 @@ void MainFrame::OnDropFiles(wxDropFilesEvent& event)
 /**
 	Adds an item to the listview
 */
-void MainFrame::AddToRename(wxString oldName, wxString newName, wxString type, wxString path) 
+void MainWindow::AddToRename(wxString oldName, wxString newName, wxString type, wxString path) 
 {
     long insertIndex = toRenameList->GetItemCount();
     toRenameList->InsertItem(insertIndex, oldName);
@@ -232,7 +232,7 @@ void MainFrame::AddToRename(wxString oldName, wxString newName, wxString type, w
 /**
 	Returns the new name based on the specified name and the currently selected capitalization mode
 */
-wxString MainFrame::GetNewName(wxString& oldName) 
+wxString MainWindow::GetNewName(wxString& oldName) 
 {
     wxString newName;
 
@@ -271,7 +271,7 @@ wxString MainFrame::GetNewName(wxString& oldName)
     }
 }
 
-wxString MainFrame::Capitalize(wxString& stringToCapitalize)
+wxString MainWindow::Capitalize(wxString& stringToCapitalize)
 {
     wxString newString = stringToCapitalize;
 
@@ -293,7 +293,7 @@ wxString MainFrame::Capitalize(wxString& stringToCapitalize)
 /**
 	Replaces two or more spaces with one space in the specified string and returns the result
 */
-wxString MainFrame::RemoveExtraSpaces(wxString& oldString) 
+wxString MainWindow::RemoveExtraSpaces(wxString& oldString) 
 {
 	wxString newString = oldString;
 
@@ -304,14 +304,14 @@ wxString MainFrame::RemoveExtraSpaces(wxString& oldString)
 	return newString;
 }
 
-wxString MainFrame::UnderscoresToSpaces(wxString& oldString) 
+wxString MainWindow::UnderscoresToSpaces(wxString& oldString) 
 {
 	wxString newString = oldString;
 	newString.Replace("_", " ");
 	return newString;
 }
 
-void MainFrame::OnDelete(wxCommandEvent& event)
+void MainWindow::OnDelete(wxCommandEvent& event)
 {
     long item = toRenameList->GetFirstSelected();
 
@@ -321,12 +321,12 @@ void MainFrame::OnDelete(wxCommandEvent& event)
     }
 }
 
-void MainFrame::OnClear(wxCommandEvent& event)
+void MainWindow::OnClear(wxCommandEvent& event)
 {
     toRenameList->DeleteAllItems();
 }
 
-void MainFrame::OnModeChoiceChange(wxCommandEvent& event) 
+void MainWindow::OnModeChoiceChange(wxCommandEvent& event) 
 {
 	settings::selectedCapitalizeMode = event.GetSelection();
 
@@ -338,7 +338,7 @@ void MainFrame::OnModeChoiceChange(wxCommandEvent& event)
     }
 }
 
-void MainFrame::RenameAll(wxCommandEvent& event)
+void MainWindow::RenameAll(wxCommandEvent& event)
 {   
     int filesToRename = toRenameList->GetItemCount();
     int succesfulRenamedFiles = 0;
@@ -379,16 +379,16 @@ void MainFrame::RenameAll(wxCommandEvent& event)
     }
 }
 
-wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(MENU_ALWAYS_ON_TOP, MainFrame::OnAlwaysOnTopChanged)
-    EVT_TOOL(TB_ADDFILE, MainFrame::OnAddFile)
-    EVT_TOOL(TB_ADDDIR, MainFrame::OnAddDir)
-    EVT_TOOL(TB_CAPITALIZE, MainFrame::RenameAll)
-    EVT_TOOL(TB_DELETE, MainFrame::OnDelete)
-    EVT_TOOL(TB_CLEAR, MainFrame::OnClear)
-    EVT_CHOICE(CH_MODE, MainFrame::OnModeChoiceChange)
-    EVT_MENU(wxID_EXIT, MainFrame::OnExit)
-	EVT_CLOSE(MainFrame::OnClose)
-    EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
+wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
+    EVT_MENU(MENU_ALWAYS_ON_TOP, MainWindow::OnAlwaysOnTopChanged)
+    EVT_TOOL(TB_ADDFILE, MainWindow::OnAddFile)
+    EVT_TOOL(TB_ADDDIR, MainWindow::OnAddDir)
+    EVT_TOOL(TB_CAPITALIZE, MainWindow::RenameAll)
+    EVT_TOOL(TB_DELETE, MainWindow::OnDelete)
+    EVT_TOOL(TB_CLEAR, MainWindow::OnClear)
+    EVT_CHOICE(CH_MODE, MainWindow::OnModeChoiceChange)
+    EVT_MENU(wxID_EXIT, MainWindow::OnExit)
+	EVT_CLOSE(MainWindow::OnClose)
+    EVT_MENU(wxID_ABOUT, MainWindow::OnAbout)
 wxEND_EVENT_TABLE()
 wxIMPLEMENT_APP(Capitalizer);
