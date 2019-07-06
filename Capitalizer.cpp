@@ -15,4 +15,3 @@ bool Capitalizer::OnInit()
     frame->Show(true);
     return true;
 }
-/*  */
