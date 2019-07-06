@@ -24,8 +24,7 @@
 wxMenu *MainWindow::menuCapitalizer;
 wxListView *MainWindow::toRenameList;
 
-MainWindow::MainWindow(const wxString& title, const wxPoint& pos, const wxSize& size)
-    : wxFrame(NULL, wxID_ANY, title, pos, size)
+MainWindow::MainWindow() : wxFrame(NULL, wxID_ANY, "Capitalizer", wxPoint(50, 50), wxSize(800, 600))
 {
 	settings::Load();
 

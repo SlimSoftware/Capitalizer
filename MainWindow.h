@@ -12,7 +12,7 @@
 class MainWindow: public wxFrame
 {
 public:
-    MainWindow(const wxString& title, const wxPoint& pos, const wxSize& size);
+    MainWindow();
 
 private:
     void OnAlwaysOnTopChanged(wxCommandEvent& event);
