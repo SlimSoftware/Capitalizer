@@ -10,8 +10,8 @@
 
 bool Capitalizer::OnInit()
 {
-    MainWindow *frame = new MainWindow("Capitalizer", wxPoint(50, 50), wxSize(800, 600));
-    frame->SetIcon((wxIcon)icon_xpm);
-    frame->Show(true);
+    MainWindow *mainWindow = new MainWindow("Capitalizer", wxPoint(50, 50), wxSize(800, 600));
+    mainWindow->SetIcon((wxIcon)icon_xpm);
+    mainWindow->Show(true);
     return true;
 }
