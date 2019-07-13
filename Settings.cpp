@@ -20,6 +20,7 @@ using namespace std;
 namespace settings {
 	int selectedCapitalizeMode = 0;
 	bool restoreAlwaysOnTop = true;
+	bool isAlwaysOnTop = false;
 	wxString lastOpenedDir = "";
 
 	void Load()
@@ -62,6 +63,7 @@ namespace settings {
 
 				selectedCapitalizeMode = j["selectedCapitalizeMode"];
 				restoreAlwaysOnTop = j["restoreAlwaysOnTop"];
+				isAlwaysOnTop = j["isAlwaysOnTop"];
 				wxString lastOpenedDirWxString = j["lastOpenedDir"].get<string>();
 				lastOpenedDir = lastOpenedDirWxString;
 			}
@@ -79,6 +81,7 @@ namespace settings {
 		json j = {
 			{"selectedCapitalizeMode", selectedCapitalizeMode},
 			{"restoreAlwaysOnTop", restoreAlwaysOnTop},
+			{"isAlwaysOnTop", isAlwaysOnTop},
 			{"lastOpenedDir", lastOpenedDir.ToStdString()}
 		};
 
@@ -90,6 +93,7 @@ namespace settings {
 	{
 		selectedCapitalizeMode = 0;
 		restoreAlwaysOnTop = true;
+		isAlwaysOnTop = false;
 		lastOpenedDir = "";
 	}
 }

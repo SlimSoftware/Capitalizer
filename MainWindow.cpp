@@ -13,6 +13,7 @@
 
 #include "Capitalizer.h"
 #include "MainWindow.h"
+#include "SettingsDialog.h"
 #include "Settings.h"
 
 #include "img/add.xpm"
@@ -29,13 +30,21 @@ MainWindow::MainWindow() : wxFrame(NULL, wxID_ANY, "Capitalizer", wxPoint(50, 50
 	settings::Load();
 
     menuCapitalizer = new wxMenu();
-    menuCapitalizer->AppendCheckItem(MENU_ALWAYS_ON_TOP, "Always on Top");
+    menuCapitalizer->AppendCheckItem(MENU_ALWAYS_ON_TOP, "Always on &Top");
     menuCapitalizer->AppendSeparator();
+	menuCapitalizer->Append(MENU_SETTINGS, "&Settings");
     menuCapitalizer->Append(wxID_ABOUT);
     menuCapitalizer->Append(wxID_EXIT);
     wxMenuBar *menuBar = new wxMenuBar();
     menuBar->Append(menuCapitalizer, "&Capitalizer");
     SetMenuBar(menuBar);
+
+	if (settings::restoreAlwaysOnTop == true && settings::isAlwaysOnTop == true) {
+		menuCapitalizer->Check(MENU_ALWAYS_ON_TOP, true);
+		wxCommandEvent event(wxEVT_MENU, MENU_ALWAYS_ON_TOP);
+		event.SetId(MENU_ALWAYS_ON_TOP);
+		AddPendingEvent(event);
+	}
 	
     wxToolBar *toolBar = CreateToolBar(wxTB_TEXT);
     wxBitmap addBmp(add_xpm);
@@ -81,20 +90,17 @@ void MainWindow::OnAlwaysOnTopChanged(wxCommandEvent& event)
 {
     if (menuCapitalizer->IsChecked(MENU_ALWAYS_ON_TOP)) {
         SetWindowStyle(wxDEFAULT_FRAME_STYLE | wxSTAY_ON_TOP);
+		settings::isAlwaysOnTop = true;
     } else {
+		settings::isAlwaysOnTop = false;
         SetWindowStyle(wxDEFAULT_FRAME_STYLE);
     }   
 }
 
-void MainWindow::OnClose(wxCloseEvent& event)
+void MainWindow::OnSettings(wxCommandEvent& event) 
 {
-	settings::Save();
-	Destroy();
-}
-
-void MainWindow::OnExit(wxCommandEvent& event)
-{
-	Close(true);
+	SettingsDialog *settingsDialog = new SettingsDialog(this);
+	settingsDialog->Destroy();
 }
 
 void MainWindow::OnAbout(wxCommandEvent& event)
@@ -113,6 +119,17 @@ void MainWindow::OnAbout(wxCommandEvent& event)
 
     wxMessageBox("Capitalizer v1.2 (" + osName + ")\n" + 
         "Compiled using wxWidgets " + wxVERSION_NUM_DOT_STRING, "About", wxOK | wxICON_INFORMATION);
+}
+
+void MainWindow::OnClose(wxCloseEvent& event)
+{
+	settings::Save();
+	Destroy();
+}
+
+void MainWindow::OnExit(wxCommandEvent& event)
+{
+	Close(true);
 }
 
 void MainWindow::OnAddFile(wxCommandEvent& event)
@@ -379,15 +396,16 @@ void MainWindow::RenameAll(wxCommandEvent& event)
 }
 
 wxBEGIN_EVENT_TABLE(MainWindow, wxFrame)
-    EVT_MENU(MENU_ALWAYS_ON_TOP, MainWindow::OnAlwaysOnTopChanged)
     EVT_TOOL(TB_ADDFILE, MainWindow::OnAddFile)
     EVT_TOOL(TB_ADDDIR, MainWindow::OnAddDir)
     EVT_TOOL(TB_CAPITALIZE, MainWindow::RenameAll)
     EVT_TOOL(TB_DELETE, MainWindow::OnDelete)
     EVT_TOOL(TB_CLEAR, MainWindow::OnClear)
     EVT_CHOICE(CH_MODE, MainWindow::OnModeChoiceChange)
-    EVT_MENU(wxID_EXIT, MainWindow::OnExit)
-	EVT_CLOSE(MainWindow::OnClose)
+	EVT_MENU(MENU_ALWAYS_ON_TOP, MainWindow::OnAlwaysOnTopChanged)
+	EVT_MENU(MENU_SETTINGS, MainWindow::OnSettings)
     EVT_MENU(wxID_ABOUT, MainWindow::OnAbout)
+	EVT_MENU(wxID_EXIT, MainWindow::OnExit)
+	EVT_CLOSE(MainWindow::OnClose)
 wxEND_EVENT_TABLE()
 wxIMPLEMENT_APP(Capitalizer);

@@ -15,14 +15,15 @@ public:
     MainWindow();
 
 private:
-    void OnAlwaysOnTopChanged(wxCommandEvent& event);
     void OnAddFile(wxCommandEvent& event);
     void OnAddDir(wxCommandEvent& event);
     void OnDropFiles(wxDropFilesEvent& event);
     void AddToRename(wxString oldName, wxString newName, wxString type, wxString path);
+	void OnAlwaysOnTopChanged(wxCommandEvent& event);
+	void OnSettings(wxCommandEvent& event);
+	void OnAbout(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
 	void OnClose(wxCloseEvent &event);
-    void OnAbout(wxCommandEvent& event);
     wxString GetNewName(wxString& oldName);
     wxString Capitalize(wxString& stringToCapitalize);
 	wxString RemoveExtraSpaces(wxString & oldString);
@@ -46,5 +47,6 @@ enum
     TB_DELETE,
     TB_CLEAR,
     CH_MODE,
-    MENU_ALWAYS_ON_TOP
+    MENU_ALWAYS_ON_TOP,
+	MENU_SETTINGS
 };

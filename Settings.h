@@ -18,5 +18,6 @@ namespace settings {
 	
 	extern int selectedCapitalizeMode;
 	extern bool restoreAlwaysOnTop;
+	extern bool isAlwaysOnTop;
 	extern wxString lastOpenedDir;
 }
