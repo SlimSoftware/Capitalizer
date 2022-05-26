@@ -348,7 +348,3 @@ healthchecksdb
 
 # Visual Studio Code
 .vscode/
-
-# Object files and binary
-*.o
-capitalizer
