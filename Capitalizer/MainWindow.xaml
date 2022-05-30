@@ -7,13 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel x:Name="titleBar" Orientation="Horizontal" Background="White" Grid.Row="0">
+        <StackPanel x:Name="titleBar" Orientation="Horizontal" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Grid.Row="0">
             <Image Source="Assets/StoreLogo.scale-100.png"            
                 HorizontalAlignment="Left" 
                 Width="20" Height="20" 
