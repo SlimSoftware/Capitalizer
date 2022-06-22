@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -10,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -26,9 +29,19 @@ namespace Capitalizer
         public MainWindow()
         {
             this.InitializeComponent();
-            Title = "Capitalizer";
-            ExtendsContentIntoTitleBar = true;
-            SetTitleBar(titleBar);
+            Title = Package.Current.DisplayName;
+            SetIcon();
+        }
+
+        /// <summary>
+        /// Sets the window icon to be the Capitalizer icon
+        /// </summary>
+        private void SetIcon()
+        {
+            IntPtr windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            WindowId windowId = Win32Interop.GetWindowIdFromWindow(windowHandle);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+            appWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\capitalizer.ico"));
         }
     }
 }

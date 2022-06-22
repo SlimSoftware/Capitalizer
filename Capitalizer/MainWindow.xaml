@@ -9,21 +9,11 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="28"/>
+            <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel x:Name="titleBar" Orientation="Horizontal" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Grid.Row="0">
-            <Image Source="Assets/StoreLogo.scale-100.png"            
-                HorizontalAlignment="Left" 
-                Width="20" Height="20" 
-                Margin="8,0" />
-            <TextBlock Text="{x:Bind Title}" 
-                       VerticalAlignment="Center"
-                       Margin="5,0,0,0" />
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
             <AppBarButton Label="Add Files">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Add" Foreground="Green" />
