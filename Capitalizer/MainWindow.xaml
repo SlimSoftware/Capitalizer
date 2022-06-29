@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <AppBarButton Label="Add Files">
+            <AppBarButton Label="Add Files" Click="AddFilesAppBarButton_Click">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Add" Foreground="Green" />
                 </AppBarButton.Icon>
@@ -45,6 +45,7 @@
       <controls:DataGrid
         Grid.Row="1"
         x:Name="dataGrid"
+        AutoGenerateColumns="False"
         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
         CanUserSortColumns="False"
         CanUserReorderColumns="True"
