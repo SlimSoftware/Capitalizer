@@ -1,5 +1,4 @@
-﻿using Capitalizer.Models;
-using Microsoft.UI;
+﻿using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using System;
@@ -7,8 +6,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
+using CapitalizerLib.Models;
+using System.Linq;
 
-namespace Capitalizer
+namespace CapitalizerUI
 {
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
@@ -45,35 +46,13 @@ namespace Capitalizer
             WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
 
             var files = await picker.PickMultipleFilesAsync();
-
             if (files != null)
             {
-                foreach (var file in files)
+                var items = CapitalizerLib.ItemHelper.FilesToItems(files);
+                foreach (var item in items)
                 {
-                    var item = new CapitalizableItem()
-                    {
-                        OldName = file.Name,
-                        NewName = ProcessFileName(file.Name),
-                        Path = file.Path,
-                        Type = CapitalizableType.File
-                    };
-
                     CapitalizableItems.Add(item);
                 }
-            }
-        }
-
-        private string ProcessFileName(string fileName)
-        {
-            string newName = fileName.ToLower();
-            
-            if (newName != fileName)
-            {
-                return newName;
-            } 
-            else
-            {
-                return null;
             }
         }
     }

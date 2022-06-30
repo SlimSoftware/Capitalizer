@@ -1,8 +1,8 @@
-﻿namespace Capitalizer.Models
+﻿namespace CapitalizerLib.Models
 {
-    enum CapitalizableType { File, Folder }
+    public enum CapitalizableType { File, Folder }
 
-    internal class CapitalizableItem
+    public class CapitalizableItem
     {
         public string OldName { get; set; }
         public string NewName { get; set; }
