@@ -6,6 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" 
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -15,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <AppBarButton Label="Add Files" Click="AddFilesAppBarButton_Click">
+            <AppBarButton x:Name="addFilesAppBarButton"  Label="Add Files" Click="AddFilesAppBarButton_Click">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Add" Foreground="Green" />
                 </AppBarButton.Icon>
@@ -25,12 +27,36 @@
                     <SymbolIcon Symbol="NewFolder" Foreground="Goldenrod" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="Delete">
+            <AppBarButton x:Name="deleteAppBarButton" Label="Delete" Click="DeleteAppBarButton_Click">
+                <Interactivity:Interaction.Behaviors>
+                    <Core:DataTriggerBehavior Binding="{Binding SelectedIndex, ElementName=capitalizeItemsDataGrid}" 
+                                              ComparisonCondition="GreaterThanOrEqual" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAppBarButton}"
+                            PropertyName="IsEnabled" Value="True" />
+                    </Core:DataTriggerBehavior>
+                    <Core:DataTriggerBehavior Binding="{Binding SelectedIndex, ElementName=capitalizeItemsDataGrid}" 
+                                              ComparisonCondition="LessThan" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAppBarButton}" 
+                                                   PropertyName="IsEnabled" Value="False" />
+                    </Core:DataTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Delete" Foreground="Red" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="Delete All">
+            <AppBarButton x:Name="deleteAllAppBarButton" Label="Delete All">
+                <Interactivity:Interaction.Behaviors>
+                    <Core:DataTriggerBehavior Binding="{Binding CapitalizableItems.Count}"
+                                              ComparisonCondition="Equal" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAllAppBarButton}" 
+                            PropertyName="IsEnabled" Value="False" />
+                    </Core:DataTriggerBehavior>
+                    <Core:DataTriggerBehavior Binding="{Binding CapitalizableItems.Count}"
+                                              ComparisonCondition="NotEqual" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAllAppBarButton}" 
+                            PropertyName="IsEnabled" Value="False" />
+                    </Core:DataTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Delete" Foreground="Red" />
                 </AppBarButton.Icon>
@@ -43,20 +69,20 @@
         </StackPanel>
 
         <controls:DataGrid
-        Grid.Row="1"
-        x:Name="dataGrid"
-        AutoGenerateColumns="False"
-        VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-        CanUserSortColumns="False"
-        CanUserReorderColumns="True"
-        CanUserResizeColumns="True"
-        ColumnHeaderHeight="32"
-        GridLinesVisibility="None"
-        HeadersVisibility="Column"
-        IsReadOnly="False"
-        RowDetailsVisibilityMode="Collapsed"
-        SelectionMode="Extended"
-        RowGroupHeaderPropertyNameAlternative="Range">
+            Grid.Row="1"
+            x:Name="capitalizeItemsDataGrid"
+            AutoGenerateColumns="False"
+            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+            CanUserSortColumns="False"
+            CanUserReorderColumns="True"
+            CanUserResizeColumns="True"
+            ColumnHeaderHeight="32"
+            GridLinesVisibility="None"
+            HeadersVisibility="Column"
+            IsReadOnly="False"
+            RowDetailsVisibilityMode="Collapsed"
+            SelectionMode="Extended"
+            RowGroupHeaderPropertyNameAlternative="Range">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" />
                 <controls:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" />

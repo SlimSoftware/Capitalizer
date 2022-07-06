@@ -8,6 +8,8 @@ using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
 using CapitalizerLib.Models;
 using System.Linq;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace CapitalizerUI
 {
@@ -16,14 +18,15 @@ namespace CapitalizerUI
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        ObservableCollection<CapitalizableItem> CapitalizableItems { get; set; } = new ObservableCollection<CapitalizableItem>();
+        ObservableCollection<CapitalizableItem> CapitalizableItems { get; set; } = 
+            new ObservableCollection<CapitalizableItem>();
 
         public MainWindow()
         {
             this.InitializeComponent();
             Title = Package.Current.DisplayName;
             SetIcon();
-            dataGrid.ItemsSource = CapitalizableItems;
+            capitalizeItemsDataGrid.ItemsSource = CapitalizableItems;
         }
 
         /// <summary>
@@ -53,6 +56,15 @@ namespace CapitalizerUI
                 {
                     CapitalizableItems.Add(item);
                 }
+            }
+        }
+
+        private void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItems = capitalizeItemsDataGrid.SelectedItems;
+            for (int i = 0; i < selectedItems.Count; i++)
+            {
+                CapitalizableItems.RemoveAt(i);
             }
         }
     }
