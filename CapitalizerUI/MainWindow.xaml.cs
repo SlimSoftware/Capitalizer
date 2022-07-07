@@ -18,7 +18,7 @@ namespace CapitalizerUI
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        ObservableCollection<CapitalizableItem> CapitalizableItems { get; set; } = 
+        public ObservableCollection<CapitalizableItem> CapitalizableItems { get; set; } = 
             new ObservableCollection<CapitalizableItem>();
 
         public MainWindow()
@@ -66,6 +66,11 @@ namespace CapitalizerUI
             {
                 CapitalizableItems.RemoveAt(i);
             }
+        }
+
+        private void DeleteAllAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            CapitalizableItems.Clear();
         }
     }
 }
