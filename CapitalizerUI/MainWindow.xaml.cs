@@ -59,6 +59,25 @@ namespace CapitalizerUI
             }
         }
 
+        private async void AddFolderAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            FolderPicker picker = new FolderPicker();
+            picker.FileTypeFilter.Add("*");
+
+            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+
+            var folder = await picker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                var items = await CapitalizerLib.ItemHelper.FolderToItemsAsync(folder);
+                foreach (var item in items)
+                {
+                    CapitalizableItems.Add(item);
+                }
+            }
+        }
+
         private void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedItems = capitalizeItemsDataGrid.SelectedItems;

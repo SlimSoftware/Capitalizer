@@ -1,6 +1,8 @@
 ﻿using CapitalizerLib.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace CapitalizerLib
@@ -24,6 +26,13 @@ namespace CapitalizerLib
                 items.Add(item);
             }
 
+            return items;
+        }
+
+        public async static Task<List<CapitalizableItem>> FolderToItemsAsync(StorageFolder folder)
+        {
+            var files = await folder.GetFilesAsync();
+            var items = FilesToItems(files);
             return items;
         }
 

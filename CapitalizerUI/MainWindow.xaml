@@ -23,7 +23,7 @@
                     <SymbolIcon Symbol="Add" Foreground="Green" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="Add Folder">
+            <AppBarButton x:Name="addFolderAppBarButton" Label="Add Folder" Click="AddFolderAppBarButton_Click">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="NewFolder" Foreground="Goldenrod" />
                 </AppBarButton.Icon>
