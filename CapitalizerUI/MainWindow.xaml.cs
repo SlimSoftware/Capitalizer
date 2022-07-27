@@ -7,9 +7,8 @@ using System.IO;
 using Windows.ApplicationModel;
 using Windows.Storage.Pickers;
 using CapitalizerLib.Models;
-using System.Linq;
-using System.Diagnostics;
-using System.Collections.Generic;
+using CapitalizerLib;
+using Microsoft.UI.Xaml.Controls;
 
 namespace CapitalizerUI
 {
@@ -20,6 +19,8 @@ namespace CapitalizerUI
     {
         public ObservableCollection<CapitalizableItem> CapitalizableItems { get; set; } = 
             new ObservableCollection<CapitalizableItem>();
+
+        public CapitalizeMode SelectedCapitalizeMode = CapitalizeMode.EveryWord;
 
         public MainWindow()
         {
@@ -51,7 +52,7 @@ namespace CapitalizerUI
             var files = await picker.PickMultipleFilesAsync();
             if (files != null)
             {
-                var items = CapitalizerLib.ItemHelper.FilesToItems(files);
+                var items = ItemHelper.FilesToItems(files, SelectedCapitalizeMode);
                 foreach (var item in items)
                 {
                     CapitalizableItems.Add(item);
@@ -70,7 +71,7 @@ namespace CapitalizerUI
             var folder = await picker.PickSingleFolderAsync();
             if (folder != null)
             {
-                var items = await CapitalizerLib.ItemHelper.FolderToItemsAsync(folder);
+                var items = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
                 foreach (var item in items)
                 {
                     CapitalizableItems.Add(item);
@@ -90,6 +91,11 @@ namespace CapitalizerUI
         private void DeleteAllAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             CapitalizableItems.Clear();
+        }
+
+        private void ModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedCapitalizeMode = (CapitalizeMode)modeComboBox.SelectedIndex;
         }
     }
 }

@@ -62,6 +62,20 @@
                     <SymbolIcon Symbol="Delete" Foreground="Red" />
                 </AppBarButton.Icon>
             </AppBarButton>
+
+            <StackPanel Orientation="Vertical" Margin="0,2">
+                <TextBlock>Mode</TextBlock>
+                <ComboBox x:Name="modeComboBox" MinWidth="260" SelectedIndex="0"
+                          SelectionChanged="ModeComboBox_SelectionChanged">
+                    <x:String>Capitalize Every Word</x:String>
+                    <x:String>Like in a sentence</x:String>
+                    <x:String>all lowercase</x:String>
+                    <x:String>ALL UPPERCASE</x:String>
+                    <x:String>Remove extra spaces</x:String>
+                    <x:String>Replace underscores with spaces</x:String>
+                </ComboBox>
+            </StackPanel>
+
             <AppBarButton Label="Rename">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Accept" Foreground="Green" />

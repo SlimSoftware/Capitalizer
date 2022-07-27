@@ -1,15 +1,14 @@
 ﻿using CapitalizerLib.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace CapitalizerLib
 {
-    public class ItemHelper
+    public static class ItemHelper
     {
-        public static List<CapitalizableItem> FilesToItems(IReadOnlyList<StorageFile> files)
+        public static List<CapitalizableItem> FilesToItems(IReadOnlyList<StorageFile> files, CapitalizeMode mode)
         {
             var items = new List<CapitalizableItem>();
 
@@ -18,7 +17,7 @@ namespace CapitalizerLib
                 var item = new CapitalizableItem()
                 {
                     OldName = file.Name,
-                    NewName = ProcessFileName(file.Name),
+                    NewName = CapitalizeHelper.Capitalize(file.Name, mode),
                     Path = file.Path,
                     Type = CapitalizableType.File
                 };
@@ -29,25 +28,11 @@ namespace CapitalizerLib
             return items;
         }
 
-        public async static Task<List<CapitalizableItem>> FolderToItemsAsync(StorageFolder folder)
+        public async static Task<List<CapitalizableItem>> FolderToItemsAsync(StorageFolder folder, CapitalizeMode mode)
         {
             var files = await folder.GetFilesAsync();
-            var items = FilesToItems(files);
+            var items = FilesToItems(files, mode);
             return items;
-        }
-
-        private static string ProcessFileName(string fileName)
-        {
-            string newName = fileName.ToLower();
-
-            if (newName != fileName)
-            {
-                return newName;
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }
