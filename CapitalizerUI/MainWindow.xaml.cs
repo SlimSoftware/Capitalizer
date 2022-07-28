@@ -96,6 +96,15 @@ namespace CapitalizerUI
         private void ModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCapitalizeMode = (CapitalizeMode)modeComboBox.SelectedIndex;
+
+            foreach (CapitalizableItem item in CapitalizableItems)
+            {
+                string newName = CapitalizeHelper.Capitalize(item.OldName, SelectedCapitalizeMode);
+                if (newName != item.NewName)
+                {
+                    item.NewName = newName;
+                }
+            }
         }
     }
 }
