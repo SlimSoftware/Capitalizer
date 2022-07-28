@@ -28,6 +28,9 @@ namespace CapitalizerUI
             Title = Package.Current.DisplayName;
             SetIcon();
             capitalizeItemsDataGrid.ItemsSource = CapitalizableItems;
+
+            findStringTextBox.Text = Settings.FindString;
+            replaceWithStringTextBox.Text = Settings.ReplaceWithString;
         }
 
         /// <summary>
@@ -96,6 +99,18 @@ namespace CapitalizerUI
         private void ModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCapitalizeMode = (CapitalizeMode)modeComboBox.SelectedIndex;
+
+            if (findReplacePanel != null)
+            {
+                if (SelectedCapitalizeMode == CapitalizeMode.FindReplace)
+                {
+                    findReplacePanel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    findReplacePanel.Visibility = Visibility.Collapsed;
+                }
+            }
 
             foreach (CapitalizableItem item in CapitalizableItems)
             {

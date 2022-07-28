@@ -3,7 +3,7 @@
 namespace CapitalizerLib
 {
     public enum CapitalizeMode { EveryWord, LikeSentence, LowerCase, UpperCase, 
-        RemoveExtraSpaces, UnderscoresToSpaces };
+        RemoveExtraSpaces, FindReplace };
 
     public static class CapitalizeHelper
     {
@@ -21,8 +21,8 @@ namespace CapitalizerLib
                     return fileName.ToUpper();
                 case CapitalizeMode.RemoveExtraSpaces:
                     return RemoveExtraSpaces(fileName);
-                case CapitalizeMode.UnderscoresToSpaces:
-                    return fileName.Replace("_", " ");
+                case CapitalizeMode.FindReplace:
+                    return fileName.Replace(Settings.FindString, Settings.ReplaceWithString);
                 default:
                     return fileName;
             }

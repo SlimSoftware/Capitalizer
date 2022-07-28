@@ -63,7 +63,7 @@
                 </AppBarButton.Icon>
             </AppBarButton>
 
-            <StackPanel Orientation="Vertical" Margin="0,2">
+            <StackPanel Orientation="Vertical" Margin="5,2">
                 <TextBlock>Mode</TextBlock>
                 <ComboBox x:Name="modeComboBox" MinWidth="260" SelectedIndex="0"
                           SelectionChanged="ModeComboBox_SelectionChanged">
@@ -72,10 +72,22 @@
                     <x:String>all lowercase</x:String>
                     <x:String>ALL UPPERCASE</x:String>
                     <x:String>Remove extra spaces</x:String>
-                    <x:String>Replace underscores with spaces</x:String>
+                    <x:String>Find and replace</x:String>
                 </ComboBox>
             </StackPanel>
 
+            <StackPanel x:Name="findReplacePanel" Orientation="Horizontal" 
+                        Visibility="Collapsed" Margin="5,2">
+                <StackPanel Orientation="Vertical" Margin="5,0">
+                    <TextBlock>Find</TextBlock>
+                    <TextBox x:Name="findStringTextBox" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock>Replace with</TextBlock>
+                    <TextBox x:Name="replaceWithStringTextBox" />
+                </StackPanel>
+            </StackPanel>
+            
             <AppBarButton Label="Rename">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Accept" Foreground="Green" />
