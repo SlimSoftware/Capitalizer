@@ -121,5 +121,45 @@ namespace CapitalizerUI
                 }
             }
         }
+
+        private async void RenameAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            int failedRenameCount = 0;
+
+            foreach (CapitalizableItem item in CapitalizableItems)
+            {
+                try
+                {
+                    await item.Rename();
+                } 
+                catch
+                {
+                    item.RenameFailed = true;
+                    failedRenameCount++;
+                }
+            }
+
+            if (failedRenameCount == 0)
+            {
+                if (renameFailedInfoBar.Visibility == Visibility.Visible)
+                {
+                    renameFailedInfoBar.Visibility = Visibility.Collapsed;
+                }
+
+                renameSuccesInfoBar.Message = $"Succesfully renamed {CapitalizableItems.Count} file(s).";
+                renameSuccesInfoBar.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                if (renameSuccesInfoBar.Visibility == Visibility.Visible)
+                {
+                    renameSuccesInfoBar.Visibility = Visibility.Collapsed;
+                }
+
+                renameFailedInfoBar.Message = $"Failed to rename {failedRenameCount} file(s). They have been marked in the list. " +
+                    $"Please check if these files still exist and if they are writeable.";
+                renameFailedInfoBar.Visibility = Visibility.Visible;
+            }
+        }
     }
 }
