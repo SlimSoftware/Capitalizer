@@ -57,6 +57,18 @@ namespace CapitalizerLib.Models
             Path = file.Path;
         }
 
+        /// <summary>
+        /// Capitalizes the old filename and stores the result in the NewName property
+        /// </summary>
+        public void Capitalize(CapitalizeMode mode)
+        {
+            string newName = CapitalizeHelper.Capitalize(OldName, mode);
+            if (newName != NewName)
+            {
+                NewName = newName;
+            }
+        }
+
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

@@ -114,11 +114,7 @@ namespace CapitalizerUI
 
             foreach (CapitalizableItem item in CapitalizableItems)
             {
-                string newName = CapitalizeHelper.Capitalize(item.OldName, SelectedCapitalizeMode);
-                if (newName != item.NewName)
-                {
-                    item.NewName = newName;
-                }
+                item.Capitalize(SelectedCapitalizeMode);
             }
         }
 
