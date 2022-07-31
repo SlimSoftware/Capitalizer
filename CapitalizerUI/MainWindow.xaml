@@ -119,7 +119,7 @@
             ColumnHeaderHeight="32"
             GridLinesVisibility="None"
             HeadersVisibility="Column"
-            IsReadOnly="False"
+            IsReadOnly="True"
             RowDetailsVisibilityMode="Collapsed"
             SelectionMode="Extended"
             RowGroupHeaderPropertyNameAlternative="Range">

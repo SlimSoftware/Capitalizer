@@ -23,7 +23,17 @@ namespace CapitalizerLib.Models
             } 
         }
 
-        public string Path { get; set; }
+        private string path;
+        public string Path 
+        {
+            get { return path; }
+            set 
+            {
+                path = value;
+                OnPropertyChanged();
+            }
+        }
+
         public CapitalizableType Type { get; set; }
 
         private bool renameFailed = false;
@@ -47,7 +57,7 @@ namespace CapitalizerLib.Models
             var file = await StorageFile.GetFileFromPathAsync(Path);
             if (file.IsAvailable)
             {
-                await file.RenameAsync(NewName, NameCollisionOption.FailIfExists);
+                await file.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
             }
             else
             {
