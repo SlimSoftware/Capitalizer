@@ -15,7 +15,13 @@ namespace CapitalizerLib.Models
         private string newName;
         public string NewName 
         { 
-            get { return newName; } 
+            get 
+            {
+                if (newName != null)
+                    return newName;
+                else
+                    return "(no change)";
+            } 
             set
             {
                 newName = value;
@@ -54,17 +60,20 @@ namespace CapitalizerLib.Models
         /// </summary>
         public async Task Rename()
         {
-            var file = await StorageFile.GetFileFromPathAsync(Path);
-            if (file.IsAvailable)
+            if (NewName != null)
             {
-                await file.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
-            }
-            else
-            {
-                throw new Exception("Could not find to rename");
-            }
+                var file = await StorageFile.GetFileFromPathAsync(Path);
+                if (file.IsAvailable)
+                {
+                    await file.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
+                }
+                else
+                {
+                    throw new Exception("Could not find to rename");
+                }
 
-            Path = file.Path;
+                Path = file.Path;
+            }
         }
 
         /// <summary>
@@ -76,6 +85,11 @@ namespace CapitalizerLib.Models
             if (newName != NewName)
             {
                 NewName = newName;
+            }
+            
+            if (OldName == NewName)
+            {
+                NewName = null;
             }
         }
 
