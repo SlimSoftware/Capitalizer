@@ -126,8 +126,8 @@
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" />
                 <controls:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" />
-                <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" />
                 <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>
