@@ -11,9 +11,9 @@
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+          AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -108,22 +108,22 @@
                  Canvas.ZIndex="3" Visibility="Collapsed" IsOpen="True" MaxWidth="500" />
 
         <controls:DataGrid
-            x:Name="capitalizeItemsDataGrid"
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            AutoGenerateColumns="False"
-            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-            CanUserSortColumns="False"
-            CanUserReorderColumns="True"
-            CanUserResizeColumns="True"
-            ColumnHeaderHeight="32"
-            GridLinesVisibility="None"
-            HeadersVisibility="Column"
-            IsReadOnly="False"
-            RowDetailsVisibilityMode="Collapsed"
-            SelectionMode="Extended"
-            RowGroupHeaderPropertyNameAlternative="Range">
+                x:Name="capitalizeItemsDataGrid"
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                AutoGenerateColumns="False"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                CanUserSortColumns="False"
+                CanUserReorderColumns="True"
+                CanUserResizeColumns="True"
+                ColumnHeaderHeight="32"
+                GridLinesVisibility="None"
+                HeadersVisibility="Column"
+                IsReadOnly="False"
+                RowDetailsVisibilityMode="Collapsed"
+                SelectionMode="Extended"
+                RowGroupHeaderPropertyNameAlternative="Range">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" />
                 <controls:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" />

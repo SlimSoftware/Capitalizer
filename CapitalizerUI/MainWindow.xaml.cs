@@ -9,6 +9,10 @@ using Windows.Storage.Pickers;
 using CapitalizerLib.Models;
 using CapitalizerLib;
 using Microsoft.UI.Xaml.Controls;
+using Windows.ApplicationModel.DataTransfer;
+using System.Collections.Generic;
+using Windows.Storage;
+using System.Threading.Tasks;
 
 namespace CapitalizerUI
 {
@@ -44,6 +48,29 @@ namespace CapitalizerUI
             appWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\capitalizer.ico"));
         }
 
+        private void AddFiles(IReadOnlyList<StorageFile> storageFiles)
+        {
+            if (storageFiles != null)
+            {
+                var items = ItemHelper.FilesToItems(storageFiles, SelectedCapitalizeMode);
+                foreach (var item in items)
+                {
+                    CapitalizableItems.Add(item);
+                }
+            }
+        }
+        private async Task AddFolderAsync(StorageFolder folder)
+        {
+            if (folder != null)
+            {
+                var items = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
+                foreach (var item in items)
+                {
+                    CapitalizableItems.Add(item);
+                }
+            }
+        }
+
         private async void AddFilesAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             FileOpenPicker picker = new FileOpenPicker();
@@ -53,14 +80,7 @@ namespace CapitalizerUI
             WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
 
             var files = await picker.PickMultipleFilesAsync();
-            if (files != null)
-            {
-                var items = ItemHelper.FilesToItems(files, SelectedCapitalizeMode);
-                foreach (var item in items)
-                {
-                    CapitalizableItems.Add(item);
-                }
-            }
+            AddFiles(files);
         }
 
         private async void AddFolderAppBarButton_Click(object sender, RoutedEventArgs e)
@@ -72,14 +92,7 @@ namespace CapitalizerUI
             WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
 
             var folder = await picker.PickSingleFolderAsync();
-            if (folder != null)
-            {
-                var items = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
-                foreach (var item in items)
-                {
-                    CapitalizableItems.Add(item);
-                }
-            }
+            await AddFolderAsync(folder);
         }
 
         private void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
@@ -159,6 +172,48 @@ namespace CapitalizerUI
                 renameFailedInfoBar.Message = $"Failed to rename {failedRenameCount} file(s). They have been marked in the list. " +
                     $"Please check if these files still exist and if they are writeable.";
                 renameFailedInfoBar.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Grid_DragOver(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = DataPackageOperation.Copy;
+        }
+
+        private async void Grid_Drop(object sender, DragEventArgs e)
+        {
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var items = await e.DataView.GetStorageItemsAsync();
+                if (items.Count > 0)
+                {
+                    List<StorageFile> files = new();
+                    List<StorageFolder> folders = new();
+
+                    foreach (var item in items)
+                    {
+                        if (item is StorageFile)
+                        {
+                            files.Add(item as StorageFile);
+                        }
+                        if (item is StorageFolder)
+                        {
+                            folders.Add(item as StorageFolder);
+                        }
+                    }
+
+                    if (files.Count > 0)
+                    {
+                        AddFiles(files.AsReadOnly());
+                    }
+                    if (folders.Count > 0)
+                    {
+                        foreach (StorageFolder folder in folders)
+                        {
+                            await AddFolderAsync(folder);
+                        }
+                    }
+                }
             }
         }
     }
