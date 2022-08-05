@@ -17,11 +17,11 @@ namespace CapitalizerLib
                 var item = new CapitalizableItem()
                 {
                     OldName = file.Name,
-                    NewName = CapitalizeHelper.Capitalize(file.Name, mode),
                     Path = file.Path,
                     Type = CapitalizableType.File
                 };
 
+                item.Capitalize(mode);
                 items.Add(item);
             }
 

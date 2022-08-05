@@ -127,11 +127,7 @@ namespace CapitalizerUI
 
             foreach (CapitalizableItem item in CapitalizableItems)
             {
-                string newName = CapitalizeHelper.Capitalize(item.OldName, SelectedCapitalizeMode);
-                if (newName != item.NewName)
-                {
-                    item.NewName = newName;
-                }
+                item.Capitalize(SelectedCapitalizeMode);
             }
         }
 
@@ -160,6 +156,7 @@ namespace CapitalizerUI
                 }
 
                 renameSuccesInfoBar.Message = $"Succesfully renamed {CapitalizableItems.Count} file(s).";
+                renameSuccesInfoBar.IsOpen = true;
                 renameSuccesInfoBar.Visibility = Visibility.Visible;
             }
             else
@@ -171,6 +168,7 @@ namespace CapitalizerUI
 
                 renameFailedInfoBar.Message = $"Failed to rename {failedRenameCount} file(s). They have been marked in the list. " +
                     $"Please check if these files still exist and if they are writeable.";
+                renameFailedInfoBar.IsOpen = true;
                 renameFailedInfoBar.Visibility = Visibility.Visible;
             }
         }

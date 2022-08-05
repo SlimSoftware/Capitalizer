@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.IO;
+using System.Text.RegularExpressions;
 
 namespace CapitalizerLib
 {
@@ -9,23 +10,32 @@ namespace CapitalizerLib
     {
         public static string Capitalize(string fileName, CapitalizeMode mode)
         {
+            string fileNameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
+
             switch (mode)
             {
                 case CapitalizeMode.EveryWord:
-                    return Regex.Replace(fileName, @"\b([a-z])", m => m.Value.ToUpper());
+                    fileNameWithoutExt = Regex.Replace(fileNameWithoutExt, @"\b([a-z])", m => m.Value.ToUpper());
+                    break;
                 case CapitalizeMode.LikeSentence:
-                    return CapitalizeFirstLetter(fileName);
+                    fileNameWithoutExt = CapitalizeFirstLetter(fileNameWithoutExt);
+                    break;
                 case CapitalizeMode.LowerCase:
-                    return fileName.ToLower();
+                    fileNameWithoutExt = fileNameWithoutExt.ToLower();
+                    break;
                 case CapitalizeMode.UpperCase:
-                    return fileName.ToUpper();
+                    fileNameWithoutExt = fileNameWithoutExt.ToUpper();
+                    break;
                 case CapitalizeMode.RemoveExtraSpaces:
-                    return RemoveExtraSpaces(fileName);
+                    fileNameWithoutExt = RemoveExtraSpaces(fileNameWithoutExt);
+                    break;
                 case CapitalizeMode.FindReplace:
-                    return fileName.Replace(Settings.FindString, Settings.ReplaceWithString);
-                default:
-                    return fileName;
+                    fileNameWithoutExt = fileNameWithoutExt.Replace(Settings.FindString, Settings.ReplaceWithString);
+                    break;
             }
+
+            string fileNameExt = Path.GetExtension(fileName);
+            return $"{fileNameWithoutExt}{fileNameExt.ToLower()}";
         }
 
         private static string CapitalizeFirstLetter(string input)

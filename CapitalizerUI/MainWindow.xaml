@@ -108,27 +108,27 @@
                  Canvas.ZIndex="3" Visibility="Collapsed" IsOpen="True" MaxWidth="500" />
 
         <controls:DataGrid
-                x:Name="capitalizeItemsDataGrid"
-                Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                AutoGenerateColumns="False"
-                VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                CanUserSortColumns="False"
-                CanUserReorderColumns="True"
-                CanUserResizeColumns="True"
-                ColumnHeaderHeight="32"
-                GridLinesVisibility="None"
-                HeadersVisibility="Column"
-                IsReadOnly="False"
-                RowDetailsVisibilityMode="Collapsed"
-                SelectionMode="Extended"
-                RowGroupHeaderPropertyNameAlternative="Range">
+            x:Name="capitalizeItemsDataGrid"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            AutoGenerateColumns="False"
+            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+            CanUserSortColumns="False"
+            CanUserReorderColumns="True"
+            CanUserResizeColumns="True"
+            ColumnHeaderHeight="32"
+            GridLinesVisibility="None"
+            HeadersVisibility="Column"
+            IsReadOnly="True"
+            RowDetailsVisibilityMode="Collapsed"
+            SelectionMode="Extended"
+            RowGroupHeaderPropertyNameAlternative="Range">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" />
                 <controls:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" />
-                <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" />
                 <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>

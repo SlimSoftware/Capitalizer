@@ -15,7 +15,13 @@ namespace CapitalizerLib.Models
         private string newName;
         public string NewName 
         { 
-            get { return newName; } 
+            get 
+            {
+                if (newName != null)
+                    return newName;
+                else
+                    return "(no change)";
+            } 
             set
             {
                 newName = value;
@@ -23,7 +29,17 @@ namespace CapitalizerLib.Models
             } 
         }
 
-        public string Path { get; set; }
+        private string path;
+        public string Path 
+        {
+            get { return path; }
+            set 
+            {
+                path = value;
+                OnPropertyChanged();
+            }
+        }
+
         public CapitalizableType Type { get; set; }
 
         private bool renameFailed = false;
@@ -44,17 +60,37 @@ namespace CapitalizerLib.Models
         /// </summary>
         public async Task Rename()
         {
-            var file = await StorageFile.GetFileFromPathAsync(Path);
-            if (file.IsAvailable)
+            if (NewName != null)
             {
-                await file.RenameAsync(NewName, NameCollisionOption.FailIfExists);
-            }
-            else
-            {
-                throw new Exception("Could not find to rename");
-            }
+                var file = await StorageFile.GetFileFromPathAsync(Path);
+                if (file.IsAvailable)
+                {
+                    await file.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
+                }
+                else
+                {
+                    throw new Exception("Could not find to rename");
+                }
 
-            Path = file.Path;
+                Path = file.Path;
+            }
+        }
+
+        /// <summary>
+        /// Capitalizes the old filename and stores the result in the NewName property
+        /// </summary>
+        public void Capitalize(CapitalizeMode mode)
+        {
+            string newName = CapitalizeHelper.Capitalize(OldName, mode);
+            if (newName != NewName)
+            {
+                NewName = newName;
+            }
+            
+            if (OldName == NewName)
+            {
+                NewName = null;
+            }
         }
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
