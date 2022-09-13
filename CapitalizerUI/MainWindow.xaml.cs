@@ -67,10 +67,10 @@ namespace CapitalizerUI
                 dialog.XamlRoot = this.Content.XamlRoot;
                 dialog.Title = "Add folder or contents?";
                 dialog.PrimaryButtonText = "Add folder";
-                dialog.SecondaryButtonText = "Add file contents";
+                dialog.SecondaryButtonText = "Add folder contents";
                 dialog.CloseButtonText = "Cancel";
                 dialog.DefaultButton = ContentDialogButton.Primary;
-                dialog.Content = "Do you want to add the folder itself or add the files that the folder contains?";          
+                dialog.Content = "Do you want to add the folder itself or the files that it contains?";          
                 var result = await dialog.ShowAsync();
 
                 if (result == ContentDialogResult.Primary)
