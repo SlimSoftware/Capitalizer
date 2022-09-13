@@ -63,10 +63,28 @@ namespace CapitalizerUI
         {
             if (folder != null)
             {
-                var items = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
-                foreach (var item in items)
+                ContentDialog dialog = new ContentDialog();
+                dialog.XamlRoot = this.Content.XamlRoot;
+                dialog.Title = "Add folder or contents?";
+                dialog.PrimaryButtonText = "Add folder";
+                dialog.SecondaryButtonText = "Add file contents";
+                dialog.CloseButtonText = "Cancel";
+                dialog.DefaultButton = ContentDialogButton.Primary;
+                dialog.Content = "Do you want to add the folder itself or add the files that the folder contains?";          
+                var result = await dialog.ShowAsync();
+
+                if (result == ContentDialogResult.Primary)
                 {
-                    CapitalizableItems.Add(item);
+                    var folderItem = ItemHelper.FolderToItem(folder, SelectedCapitalizeMode);
+                    CapitalizableItems.Add(folderItem);
+                }
+                else if (result == ContentDialogResult.Secondary)
+                {
+                    var fileItems = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
+                    foreach (var item in fileItems)
+                    {
+                        CapitalizableItems.Add(item);
+                    }
                 }
             }
         }
@@ -89,37 +107,11 @@ namespace CapitalizerUI
             picker.FileTypeFilter.Add("*");
 
             var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);            
-
-            ContentDialog dialog = new ContentDialog();
-            dialog.XamlRoot = this.Content.XamlRoot;
-            dialog.Title = "Add folder or contents?";
-            dialog.PrimaryButtonText = "Add folder";
-            dialog.SecondaryButtonText = "Add file contents";
-            dialog.CloseButtonText = "Cancel";
-            dialog.DefaultButton = ContentDialogButton.Primary;
-            dialog.Content = "Do you want to add the folder itself or add the files that the folder contains?";
+            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
 
             var folder = await picker.PickSingleFolderAsync();
-            var result = await dialog.ShowAsync();
-            
-            if (folder != null)
-            {
-                if (result == ContentDialogResult.Primary)
-                {
-                    var folderItem = ItemHelper.FolderToItem(folder, SelectedCapitalizeMode);
-                    CapitalizableItems.Add(folderItem);
-                }
-                else if (result == ContentDialogResult.Secondary)
-                {
-                    var fileItems = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
-                    foreach (var item in fileItems)
-                    {
-                        CapitalizableItems.Add(item);
-                    }
-                }
-            }
-        }
+            await AddFolderAsync(folder);
+        }           
 
         private void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
         {
