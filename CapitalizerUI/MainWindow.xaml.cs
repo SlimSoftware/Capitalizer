@@ -63,10 +63,28 @@ namespace CapitalizerUI
         {
             if (folder != null)
             {
-                var items = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
-                foreach (var item in items)
+                ContentDialog dialog = new ContentDialog();
+                dialog.XamlRoot = this.Content.XamlRoot;
+                dialog.Title = "Add folder or contents?";
+                dialog.PrimaryButtonText = "Add folder";
+                dialog.SecondaryButtonText = "Add folder contents";
+                dialog.CloseButtonText = "Cancel";
+                dialog.DefaultButton = ContentDialogButton.Primary;
+                dialog.Content = "Do you want to add the folder itself or the files that it contains?";          
+                var result = await dialog.ShowAsync();
+
+                if (result == ContentDialogResult.Primary)
                 {
-                    CapitalizableItems.Add(item);
+                    var folderItem = ItemHelper.FolderToItem(folder, SelectedCapitalizeMode);
+                    CapitalizableItems.Add(folderItem);
+                }
+                else if (result == ContentDialogResult.Secondary)
+                {
+                    var fileItems = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
+                    foreach (var item in fileItems)
+                    {
+                        CapitalizableItems.Add(item);
+                    }
                 }
             }
         }
@@ -93,7 +111,7 @@ namespace CapitalizerUI
 
             var folder = await picker.PickSingleFolderAsync();
             await AddFolderAsync(folder);
-        }
+        }           
 
         private void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -213,6 +231,18 @@ namespace CapitalizerUI
                     }
                 }
             }
+        }
+
+        private async void AboutAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            string version = Utilities.GetFriendlyVersion(Package.Current.Id.Version);
+            ContentDialog dialog = new ContentDialog();
+            dialog.XamlRoot = this.Content.XamlRoot;
+            dialog.Title = "About";
+            dialog.Content = $"Capitalizer v{version}";
+            dialog.CloseButtonText = "Close";
+            dialog.DefaultButton = ContentDialogButton.Close;
+            await dialog.ShowAsync();
         }
     }
 }

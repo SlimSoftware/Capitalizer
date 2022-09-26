@@ -20,6 +20,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
@@ -107,11 +108,18 @@
                  Title="Renaming succesful" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
                  Canvas.ZIndex="3" Visibility="Collapsed" IsOpen="True" MaxWidth="500" />
 
+        <AppBarButton x:Name="aboutAppBarButton" Grid.Column="2" Height="45" Width="45"
+                      ToolTipService.ToolTip="About Capitalizer" Click="AboutAppBarButton_Click">
+            <AppBarButton.Icon>
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" />
+            </AppBarButton.Icon>
+        </AppBarButton>
+
         <controls:DataGrid
             x:Name="capitalizeItemsDataGrid"
             Grid.Row="1"
             Grid.Column="0"
-            Grid.ColumnSpan="2"
+            Grid.ColumnSpan="3"
             AutoGenerateColumns="False"
             VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
             CanUserSortColumns="False"
