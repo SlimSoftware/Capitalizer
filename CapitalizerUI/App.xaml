@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
+            <local:ItemTypeIconConverter x:Key="ItemTypeIconConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

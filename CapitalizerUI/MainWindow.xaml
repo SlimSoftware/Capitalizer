@@ -145,9 +145,17 @@
             SelectionMode="Extended"
             RowGroupHeaderPropertyNameAlternative="Range">
             <controls:DataGrid.Columns>
+                <controls:DataGridTemplateColumn Width="32">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" 
+                                      Glyph="{Binding Path=Type, Converter={StaticResource ItemTypeIconConverter}}" />
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+
                 <controls:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" />
                 <controls:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" />
-                <controls:DataGridTextColumn Header="Type" Binding="{Binding Type}" />
                 <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
