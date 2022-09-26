@@ -94,7 +94,19 @@
                 </StackPanel>
             </StackPanel>
 
-            <AppBarButton Label="Rename" Click="RenameAppBarButton_Click">
+            <AppBarButton x:Name="renameAppBarButton" Label="Rename" Click="RenameAppBarButton_Click">
+                <Interactivity:Interaction.Behaviors>
+                    <Core:DataTriggerBehavior Binding="{Binding CapitalizableItems.Count, ElementName=mainWindow}"
+                                              ComparisonCondition="Equal" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=renameAppBarButton}" 
+                            PropertyName="IsEnabled" Value="False" />
+                    </Core:DataTriggerBehavior>
+                    <Core:DataTriggerBehavior Binding="{Binding CapitalizableItems.Count, ElementName=mainWindow}"
+                                              ComparisonCondition="GreaterThan" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=renameAppBarButton}" 
+                            PropertyName="IsEnabled" Value="True" />
+                    </Core:DataTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Accept" Foreground="Green" />
                 </AppBarButton.Icon>
