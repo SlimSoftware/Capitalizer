@@ -11,8 +11,8 @@
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-          AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver">
+    <Grid x:Name="mainGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+          AllowDrop="True" Drop="MainGrid_Drop" DragOver="MainGrid_DragOver">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
