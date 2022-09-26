@@ -191,12 +191,12 @@ namespace CapitalizerUI
             }
         }
 
-        private void Grid_DragOver(object sender, DragEventArgs e)
+        private void MainGrid_DragOver(object sender, DragEventArgs e)
         {
             e.AcceptedOperation = DataPackageOperation.Copy;
         }
 
-        private async void Grid_Drop(object sender, DragEventArgs e)
+        private async void MainGrid_Drop(object sender, DragEventArgs e)
         {
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
