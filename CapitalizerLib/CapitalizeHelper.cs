@@ -3,8 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace CapitalizerLib
 {
-    public enum CapitalizeMode { EveryWord, LikeSentence, LowerCase, UpperCase, 
-        RemoveExtraSpaces, FindReplace };
+    public enum CapitalizeMode
+    {
+        EveryWord,
+        LikeSentence,
+        LowerCase,
+        UpperCase,
+        RemoveExtraSpaces,
+        FindReplace
+    };
 
     public static class CapitalizeHelper
     {
@@ -45,7 +52,7 @@ namespace CapitalizerLib
             string lowerCaseRemaining = input[1..].ToLower();
             return $"{firstLetter}{lowerCaseRemaining}";
         }
-        
+
         private static string RemoveExtraSpaces(string input)
         {
             string newString = input;
