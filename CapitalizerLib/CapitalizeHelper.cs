@@ -15,7 +15,8 @@ namespace CapitalizerLib
             switch (mode)
             {
                 case CapitalizeMode.EveryWord:
-                    fileNameWithoutExt = Regex.Replace(fileNameWithoutExt, @"\b([a-z])", m => m.Value.ToUpper());
+                    fileNameWithoutExt = fileNameWithoutExt.ToLower();
+                    fileNameWithoutExt = Regex.Replace(fileNameWithoutExt, @"\b\w", m => m.Value.ToUpper());
                     break;
                 case CapitalizeMode.LikeSentence:
                     fileNameWithoutExt = CapitalizeFirstLetter(fileNameWithoutExt);
