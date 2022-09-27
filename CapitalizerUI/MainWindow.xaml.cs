@@ -89,6 +89,14 @@ namespace CapitalizerUI
             }
         }
 
+        private void CapitalizeAllItems()
+        {
+            foreach (CapitalizableItem item in CapitalizableItems)
+            {
+                item.Capitalize(SelectedCapitalizeMode);
+            }           
+        }
+
         private async void AddFilesAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             FileOpenPicker picker = new FileOpenPicker();
@@ -143,10 +151,7 @@ namespace CapitalizerUI
                 }
             }
 
-            foreach (CapitalizableItem item in CapitalizableItems)
-            {
-                item.Capitalize(SelectedCapitalizeMode);
-            }
+            CapitalizeAllItems();
         }
 
         private async void RenameAppBarButton_Click(object sender, RoutedEventArgs e)
@@ -243,6 +248,20 @@ namespace CapitalizerUI
             dialog.CloseButtonText = "Close";
             dialog.DefaultButton = ContentDialogButton.Close;
             await dialog.ShowAsync();
+        }
+
+        private void FindStringTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string newText = (sender as TextBox).Text;
+            Settings.FindString = newText;
+            CapitalizeAllItems();
+        }
+
+        private void ReplaceWithStringTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        { 
+            string newText = (sender as TextBox).Text;
+            Settings.ReplaceWithString = newText;
+            CapitalizeAllItems();
         }
     }
 }
