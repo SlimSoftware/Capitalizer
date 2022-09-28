@@ -38,7 +38,8 @@ namespace CapitalizerLib
                     fileNameWithoutExt = RemoveExtraSpaces(fileNameWithoutExt);
                     break;
                 case CapitalizeMode.FindReplace:
-                    fileNameWithoutExt = fileNameWithoutExt.Replace(Settings.FindString, Settings.ReplaceWithString);
+                    if (Settings.FindString.Length > 0)
+                        fileNameWithoutExt = fileNameWithoutExt.Replace(Settings.FindString, Settings.ReplaceWithString);
                     break;
             }
 
