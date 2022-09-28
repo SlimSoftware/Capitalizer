@@ -135,7 +135,7 @@
             AutoGenerateColumns="False"
             VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
             CanUserSortColumns="False"
-            CanUserReorderColumns="True"
+            CanUserReorderColumns="False"
             CanUserResizeColumns="True"
             ColumnHeaderHeight="32"
             GridLinesVisibility="None"

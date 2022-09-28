@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Storage;
+using System.Linq;
 
 namespace CapitalizerLib
 {
@@ -55,6 +56,18 @@ namespace CapitalizerLib
             item.Capitalize(mode);
 
             return item;
+        }
+
+        /// <summary>
+        /// Returns a collection of CapitalizableItems sorted by new name
+        /// </summary>
+        public static IEnumerable<CapitalizableItem> SortItems(IList<CapitalizableItem> items)
+        {
+            var sortedItems = from item in items
+                              orderby item.NewName ascending
+                              orderby item.OldName ascending
+                              select item;
+            return sortedItems;
         }
     }
 }

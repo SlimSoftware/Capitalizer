@@ -48,17 +48,34 @@ namespace CapitalizerUI
             appWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\capitalizer.ico"));
         }
 
+        /// <summary>
+        /// Sorts the current CapitalizableItems in the DataGrid
+        /// </summary>
+        private void SortItems()
+        {
+            CapitalizableItems = new ObservableCollection<CapitalizableItem>(ItemHelper.SortItems(CapitalizableItems));
+
+            if (capitalizeItemsDataGrid?.ItemsSource != null)
+            {
+                capitalizeItemsDataGrid.ItemsSource = CapitalizableItems;
+            }
+        }
+
         private void AddFiles(IReadOnlyList<StorageFile> storageFiles)
         {
             if (storageFiles != null)
             {
                 var items = ItemHelper.FilesToItems(storageFiles, SelectedCapitalizeMode);
+
                 foreach (var item in items)
                 {
                     CapitalizableItems.Add(item);
                 }
+
+                SortItems();
             }
         }
+
         private async Task AddFolderAsync(StorageFolder folder)
         {
             if (folder != null)
@@ -86,6 +103,8 @@ namespace CapitalizerUI
                         CapitalizableItems.Add(item);
                     }
                 }
+
+                SortItems();
             }
         }
 
@@ -94,7 +113,9 @@ namespace CapitalizerUI
             foreach (CapitalizableItem item in CapitalizableItems)
             {
                 item.Capitalize(SelectedCapitalizeMode);
-            }           
+            }
+
+            SortItems();
         }
 
         private async void AddFilesAppBarButton_Click(object sender, RoutedEventArgs e)
