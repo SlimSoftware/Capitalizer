@@ -13,6 +13,7 @@ using Windows.ApplicationModel.DataTransfer;
 using System.Collections.Generic;
 using Windows.Storage;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace CapitalizerUI
 {
@@ -61,11 +62,45 @@ namespace CapitalizerUI
             }
         }
 
+        /// <summary>
+        /// Returns true if a CapitalizableItem with the given path is already added to the CapitalizableItems list
+        /// </summary>
+        private bool IsItemAlreadyAdded(string itemPath)
+        {
+            if (CapitalizableItems.FirstOrDefault(i => i.Path == itemPath) != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list that does not contain StorageItems that have already been added to the CapitalizableItems list
+        /// </summary>
+        private IReadOnlyList<T> FilterExistingItems<T>(IReadOnlyList<T> storageItems) where T : IStorageItem
+        {
+            var filteredItems = storageItems.ToList();
+
+            foreach (T item in filteredItems)
+            {
+                if (IsItemAlreadyAdded(item.Path)) 
+                {
+                    filteredItems.Remove(item);
+                }
+            }
+
+            return filteredItems.AsReadOnly();
+        }
+
         private void AddFiles(IReadOnlyList<StorageFile> storageFiles)
         {
             if (storageFiles != null)
             {
-                var items = ItemHelper.FilesToItems(storageFiles, SelectedCapitalizeMode);
+                var filteredStorageFiles = FilterExistingItems<StorageFile>(storageFiles);
+                var items = ItemHelper.FilesToItems(filteredStorageFiles, SelectedCapitalizeMode);
 
                 foreach (var item in items)
                 {
@@ -93,14 +128,22 @@ namespace CapitalizerUI
                 if (result == ContentDialogResult.Primary)
                 {
                     var folderItem = ItemHelper.FolderToItem(folder, SelectedCapitalizeMode);
-                    CapitalizableItems.Add(folderItem);
+
+                    if (!IsItemAlreadyAdded(folder.Path))
+                    {
+                        CapitalizableItems.Add(folderItem);
+                    }
                 }
                 else if (result == ContentDialogResult.Secondary)
                 {
                     var fileItems = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
+
                     foreach (var item in fileItems)
                     {
-                        CapitalizableItems.Add(item);
+                        if (!IsItemAlreadyAdded(item.Path))
+                        {
+                            CapitalizableItems.Add(item);
+                        }
                     }
                 }
 
