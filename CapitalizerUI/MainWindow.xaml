@@ -113,11 +113,11 @@
             </AppBarButton>
         </StackPanel>
 
-        <InfoBar x:Name="renameFailedInfoBar" IsClosable="True" Severity="Error"
-                 Title="Renaming failed" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
+        <InfoBar x:Name="errorInfoBar" IsClosable="True" Severity="Error"
+                 Title="Error" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
                  Canvas.ZIndex="2" Visibility="Collapsed" IsOpen="True" MaxWidth="500" />
-        <InfoBar x:Name="renameSuccesInfoBar" IsClosable="True" Severity="Success"
-                 Title="Renaming succesful" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
+        <InfoBar x:Name="succesInfoBar" IsClosable="True" Severity="Success"
+                 Title="Succes" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
                  Canvas.ZIndex="3" Visibility="Collapsed" IsOpen="True" MaxWidth="500" />
 
         <AppBarButton x:Name="aboutAppBarButton" Grid.Column="2" Height="45" Width="45"

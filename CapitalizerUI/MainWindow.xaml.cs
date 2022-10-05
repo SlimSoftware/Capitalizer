@@ -102,12 +102,31 @@ namespace CapitalizerUI
                 var filteredStorageFiles = FilterExistingItems<StorageFile>(storageFiles);
                 var items = ItemHelper.FilesToItems(filteredStorageFiles, SelectedCapitalizeMode);
 
-                foreach (var item in items)
+                if (items.Count > 0)
                 {
-                    CapitalizableItems.Add(item);
-                }
+                    foreach (var item in items)
+                    {
+                        CapitalizableItems.Add(item);
+                    }
 
-                SortItems();
+                    SortItems();
+
+                    HideInfoBar(errorInfoBar);
+                    ShowInfoBar(succesInfoBar, $"Added {items.Count} file(s).");
+                }
+                else
+                {
+                    HideInfoBar(succesInfoBar);
+
+                    if (storageFiles.Count > 1)
+                    {                      
+                        ShowInfoBar(errorInfoBar, "These files are already added.");
+                    } 
+                    else
+                    {
+                        ShowInfoBar(errorInfoBar, "This file is already added.");
+                    }               
+                }       
             }
         }
 
@@ -133,6 +152,9 @@ namespace CapitalizerUI
                     {
                         CapitalizableItems.Add(folderItem);
                     }
+
+                    HideInfoBar(errorInfoBar);
+                    ShowInfoBar(succesInfoBar, $"Added 1 folder.");
                 }
                 else if (result == ContentDialogResult.Secondary)
                 {
@@ -145,6 +167,9 @@ namespace CapitalizerUI
                             CapitalizableItems.Add(item);
                         }
                     }
+
+                    HideInfoBar(errorInfoBar);
+                    ShowInfoBar(succesInfoBar, $"Added {fileItems.Count} files.");
                 }
 
                 SortItems();
@@ -159,6 +184,29 @@ namespace CapitalizerUI
             }
 
             SortItems();
+        }
+
+        /// <summary>
+        /// Shows a InfoBar with the given message
+        /// </summary>
+        /// <param name="infoBar">The InfoBar instance to show</param>
+        /// <param name="message">The message that will appear on the InfoBar</param>
+        private void ShowInfoBar(InfoBar infoBar, string message)
+        {
+            infoBar.Message = message;
+            infoBar.IsOpen = true;
+            infoBar.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// Hides the given InfoBar if it is currently visible
+        /// </summary>
+        private void HideInfoBar(InfoBar infoBar)
+        {
+            if (infoBar.Visibility == Visibility.Visible)
+            {
+                infoBar.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void AddFilesAppBarButton_Click(object sender, RoutedEventArgs e)
@@ -238,26 +286,14 @@ namespace CapitalizerUI
 
             if (failedRenameCount == 0)
             {
-                if (renameFailedInfoBar.Visibility == Visibility.Visible)
-                {
-                    renameFailedInfoBar.Visibility = Visibility.Collapsed;
-                }
-
-                renameSuccesInfoBar.Message = $"Succesfully renamed {CapitalizableItems.Count} items(s).";
-                renameSuccesInfoBar.IsOpen = true;
-                renameSuccesInfoBar.Visibility = Visibility.Visible;
+                HideInfoBar(errorInfoBar);
+                ShowInfoBar(succesInfoBar, $"Succesfully renamed {CapitalizableItems.Count} items(s).");
             }
             else
             {
-                if (renameSuccesInfoBar.Visibility == Visibility.Visible)
-                {
-                    renameSuccesInfoBar.Visibility = Visibility.Collapsed;
-                }
-
-                renameFailedInfoBar.Message = $"Failed to rename {failedRenameCount} items(s). They have been marked in the list. " +
-                    $"Please check if these still exist in this location and if they are writeable.";
-                renameFailedInfoBar.IsOpen = true;
-                renameFailedInfoBar.Visibility = Visibility.Visible;
+                HideInfoBar(succesInfoBar);
+                ShowInfoBar(errorInfoBar, $"Failed to rename {failedRenameCount} items(s). They have been marked in the list. " +
+                    $"Please check if these still exist in this location and if they are writeable.");
             }
         }
 
