@@ -84,7 +84,7 @@ namespace CapitalizerUI
         {
             var filteredItems = storageItems.ToList();
 
-            foreach (T item in filteredItems)
+            foreach (T item in storageItems)
             {
                 if (IsItemAlreadyAdded(item.Path)) 
                 {
