@@ -6,7 +6,8 @@ using Windows.Storage;
 
 namespace CapitalizerLib.Models
 {
-    public enum CapitalizableType { File, Folder }
+    public enum CapitalizableType { File, Folder };
+    public enum CapitalizableStatus { Pending, Succes, Failed };
 
     public class CapitalizableItem : INotifyPropertyChanged
     {
@@ -42,13 +43,13 @@ namespace CapitalizerLib.Models
 
         public CapitalizableType Type { get; set; }
 
-        private bool renameFailed = false;
-        public bool RenameFailed 
+        private CapitalizableStatus status = CapitalizableStatus.Pending;
+        public CapitalizableStatus Status 
         { 
-            get { return renameFailed; } 
+            get { return status; } 
             set
             {
-                renameFailed = value;
+                status = value;
                 OnPropertyChanged();
             }
         }
@@ -66,10 +67,12 @@ namespace CapitalizerLib.Models
                 if (file.IsAvailable)
                 {
                     await file.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
+                    Status = CapitalizableStatus.Succes;
                 }
                 else
                 {
-                    throw new Exception("Could not find to rename");
+                    Status = CapitalizableStatus.Failed;
+                    throw new Exception("Could not find item to rename");
                 }
 
                 Path = file.Path;
@@ -85,11 +88,17 @@ namespace CapitalizerLib.Models
             if (newName != NewName)
             {
                 NewName = newName;
+
+                if (Status != CapitalizableStatus.Pending)
+                {
+                    Status = CapitalizableStatus.Pending;
+                }
             }
             
             if (OldName == NewName)
             {
                 NewName = null;
+                Status = CapitalizableStatus.Succes;
             }
         }
 

@@ -227,10 +227,11 @@ namespace CapitalizerUI
                 try
                 {
                     await item.Rename();
+                    
                 } 
                 catch
                 {
-                    item.RenameFailed = true;
+                    item.Status = CapitalizableStatus.Failed;
                     failedRenameCount++;
                 }
             }

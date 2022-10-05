@@ -1,10 +1,12 @@
 ﻿using CapitalizerLib.Models;
+using Microsoft.UI;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media;
 using System;
 
-namespace CapitalizerUI
+namespace CapitalizerUI.Converters
 {
-    internal class ItemTypeIconConverter : IValueConverter
+    internal class ItemTypeColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -14,31 +16,22 @@ namespace CapitalizerUI
 
                 if (itemType == CapitalizableType.Folder)
                 {
-                    return "\uF12B";
+                    return new SolidColorBrush(Colors.Goldenrod);
                 }
                 else
                 {
-                    return "\uE7C3";
+                    return new SolidColorBrush(Colors.Gray);
                 }
-            } 
+            }
             catch
             {
-                return "\uE7C3";
+                return new SolidColorBrush(Colors.Gray);
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            string iconGlyph = (string)value;
-
-            if (iconGlyph == "\uF12B")
-            {
-                return CapitalizableType.Folder;
-            } 
-            else
-            {
-                return CapitalizableType.File;
-            }
+            throw new NotImplementedException();
         }
     }
 }

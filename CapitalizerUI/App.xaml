@@ -2,13 +2,18 @@
     x:Class="CapitalizerUI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CapitalizerUI">
+    xmlns:local="using:CapitalizerUI"
+    xmlns:converters="using:CapitalizerUI.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
-            <local:ItemTypeIconConverter x:Key="ItemTypeIconConverter"/>
+            
+            <converters:ItemTypeIconConverter x:Key="ItemTypeIconConverter" />
+            <converters:ItemTypeColorConverter x:Key="ItemTypeColorConverter" />
+            <converters:ItemStatusIconConverter x:Key="ItemStatusIconConverter" />
+            <converters:ItemStatusColorConverter x:Key="ItemStatusColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

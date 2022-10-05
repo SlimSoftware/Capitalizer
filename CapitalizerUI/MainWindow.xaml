@@ -148,8 +148,17 @@
                 <controls:DataGridTemplateColumn Width="32">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <FontIcon FontFamily="Segoe MDL2 Assets" 
-                                      Glyph="{Binding Path=Type, Converter={StaticResource ItemTypeIconConverter}}" />
+                            <SymbolIcon Symbol="{Binding Path=Type, Converter={StaticResource ItemTypeIconConverter}}"
+                                        Foreground="{Binding Path=Type, Converter={StaticResource ItemTypeColorConverter}}" />
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+
+                <controls:DataGridTemplateColumn>
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <SymbolIcon Symbol="{Binding Path=Status, Converter={StaticResource ItemStatusIconConverter}}"
+                                        Foreground="{Binding Path=Status, Converter={StaticResource ItemStatusColorConverter}}" />
                         </DataTemplate>
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
