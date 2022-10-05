@@ -243,7 +243,7 @@ namespace CapitalizerUI
                     renameFailedInfoBar.Visibility = Visibility.Collapsed;
                 }
 
-                renameSuccesInfoBar.Message = $"Succesfully renamed {CapitalizableItems.Count} file(s).";
+                renameSuccesInfoBar.Message = $"Succesfully renamed {CapitalizableItems.Count} items(s).";
                 renameSuccesInfoBar.IsOpen = true;
                 renameSuccesInfoBar.Visibility = Visibility.Visible;
             }
@@ -254,8 +254,8 @@ namespace CapitalizerUI
                     renameSuccesInfoBar.Visibility = Visibility.Collapsed;
                 }
 
-                renameFailedInfoBar.Message = $"Failed to rename {failedRenameCount} file(s). They have been marked in the list. " +
-                    $"Please check if these files still exist and if they are writeable.";
+                renameFailedInfoBar.Message = $"Failed to rename {failedRenameCount} items(s). They have been marked in the list. " +
+                    $"Please check if these still exist in this location and if they are writeable.";
                 renameFailedInfoBar.IsOpen = true;
                 renameFailedInfoBar.Visibility = Visibility.Visible;
             }
