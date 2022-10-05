@@ -63,19 +63,27 @@ namespace CapitalizerLib.Models
         {
             if (NewName != null)
             {
-                var file = await StorageFile.GetFileFromPathAsync(Path);
-                if (file.IsAvailable)
+                try 
                 {
-                    await file.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
+                    IStorageItem storageItem;
+                    if (Type == CapitalizableType.File)
+                    {
+                        storageItem = await StorageFile.GetFileFromPathAsync(Path);
+                    }
+                    else
+                    {
+                        storageItem = await StorageFolder.GetFolderFromPathAsync(Path);
+                    }
+
+                    await storageItem.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
+                    Path = storageItem.Path;
                     Status = CapitalizableStatus.Succes;
                 }
-                else
+                catch 
                 {
                     Status = CapitalizableStatus.Failed;
                     throw new Exception("Could not find item to rename");
                 }
-
-                Path = file.Path;
             }
         }
 
