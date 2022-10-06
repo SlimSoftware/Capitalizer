@@ -53,15 +53,15 @@
             </AppBarButton>
             <AppBarButton x:Name="deleteAllAppBarButton" Label="Delete All" Click="DeleteAllAppBarButton_Click">
                 <Interactivity:Interaction.Behaviors>
-                    <Core:DataTriggerBehavior Binding="{Binding CapitalizableItems.Count, ElementName=mainWindow}"
-                                              ComparisonCondition="Equal" Value="0">
-                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAllAppBarButton}" 
-                            PropertyName="IsEnabled" Value="False" />
-                    </Core:DataTriggerBehavior>
-                    <Core:DataTriggerBehavior Binding="{Binding CapitalizableItems.Count, ElementName=mainWindow}"
+                    <Core:DataTriggerBehavior Binding="{Binding ItemsSource.Count, ElementName=capitalizeItemsDataGrid}"
                                               ComparisonCondition="GreaterThan" Value="0">
                         <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAllAppBarButton}" 
                             PropertyName="IsEnabled" Value="True" />
+                    </Core:DataTriggerBehavior>
+                    <Core:DataTriggerBehavior Binding="{Binding ItemsSource.Count, ElementName=capitalizeItemsDataGrid}"
+                                              ComparisonCondition="Equal" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAllAppBarButton}" 
+                            PropertyName="IsEnabled" Value="False" />
                     </Core:DataTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
                 <AppBarButton.Icon>
@@ -96,12 +96,12 @@
 
             <AppBarButton x:Name="renameAppBarButton" Label="Rename" Click="RenameAppBarButton_Click">
                 <Interactivity:Interaction.Behaviors>
-                    <Core:DataTriggerBehavior Binding="{Binding CapitalizableItems.Count, ElementName=mainWindow}"
+                    <Core:DataTriggerBehavior Binding="{Binding ItemsSource.Count, ElementName=capitalizeItemsDataGrid}"
                                               ComparisonCondition="Equal" Value="0">
                         <Core:ChangePropertyAction TargetObject="{Binding ElementName=renameAppBarButton}" 
                             PropertyName="IsEnabled" Value="False" />
                     </Core:DataTriggerBehavior>
-                    <Core:DataTriggerBehavior Binding="{Binding CapitalizableItems.Count, ElementName=mainWindow}"
+                    <Core:DataTriggerBehavior Binding="{Binding ItemsSource.Count, ElementName=capitalizeItemsDataGrid}"
                                               ComparisonCondition="GreaterThan" Value="0">
                         <Core:ChangePropertyAction TargetObject="{Binding ElementName=renameAppBarButton}" 
                             PropertyName="IsEnabled" Value="True" />

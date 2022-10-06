@@ -169,7 +169,7 @@ namespace CapitalizerUI
                     }
 
                     HideInfoBar(errorInfoBar);
-                    ShowInfoBar(succesInfoBar, $"Added {fileItems.Count} files.");
+                    ShowInfoBar(succesInfoBar, $"Added {fileItems.Count} file(s).");
                 }
 
                 SortItems();
@@ -246,6 +246,7 @@ namespace CapitalizerUI
         private void DeleteAllAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             CapitalizableItems.Clear();
+            capitalizeItemsDataGrid.ItemsSource = CapitalizableItems;
         }
 
         private void ModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
