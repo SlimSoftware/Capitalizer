@@ -238,7 +238,8 @@ namespace CapitalizerUI
             var selectedItems = capitalizeItemsDataGrid.SelectedItems;
             for (int i = 0; i < selectedItems.Count; i++)
             {
-                CapitalizableItems.RemoveAt(i);
+                var selectedItem = (CapitalizableItem)selectedItems[i];
+                CapitalizableItems.Remove(selectedItem);
             }
         }
 
