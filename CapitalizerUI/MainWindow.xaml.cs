@@ -111,20 +111,20 @@ namespace CapitalizerUI
 
                     SortItems();
 
-                    HideInfoBar(errorInfoBar);
-                    ShowInfoBar(succesInfoBar, $"Added {items.Count} file(s).");
+                    Utilities.HideInfoBar(errorInfoBar);
+                    Utilities.ShowInfoBar(succesInfoBar, $"Added {items.Count} file(s).");
                 }
                 else
                 {
-                    HideInfoBar(succesInfoBar);
+                    Utilities.HideInfoBar(succesInfoBar);
 
                     if (storageFiles.Count > 1)
                     {                      
-                        ShowInfoBar(errorInfoBar, "These files are already added.");
+                        Utilities.ShowInfoBar(errorInfoBar, "These files are already added.");
                     } 
                     else
                     {
-                        ShowInfoBar(errorInfoBar, "This file is already added.");
+                        Utilities.ShowInfoBar(errorInfoBar, "This file is already added.");
                     }               
                 }       
             }
@@ -153,8 +153,8 @@ namespace CapitalizerUI
                         CapitalizableItems.Add(folderItem);
                     }
 
-                    HideInfoBar(errorInfoBar);
-                    ShowInfoBar(succesInfoBar, $"Added 1 folder.");
+                    Utilities.HideInfoBar(errorInfoBar);
+                    Utilities.ShowInfoBar(succesInfoBar, $"Added 1 folder.");
                 }
                 else if (result == ContentDialogResult.Secondary)
                 {
@@ -168,8 +168,8 @@ namespace CapitalizerUI
                         }
                     }
 
-                    HideInfoBar(errorInfoBar);
-                    ShowInfoBar(succesInfoBar, $"Added {fileItems.Count} file(s).");
+                    Utilities.HideInfoBar(errorInfoBar);
+                    Utilities.ShowInfoBar(succesInfoBar, $"Added {fileItems.Count} file(s).");
                 }
 
                 SortItems();
@@ -184,29 +184,6 @@ namespace CapitalizerUI
             }
 
             SortItems();
-        }
-
-        /// <summary>
-        /// Shows a InfoBar with the given message
-        /// </summary>
-        /// <param name="infoBar">The InfoBar instance to show</param>
-        /// <param name="message">The message that will appear on the InfoBar</param>
-        private void ShowInfoBar(InfoBar infoBar, string message)
-        {
-            infoBar.Message = message;
-            infoBar.IsOpen = true;
-            infoBar.Visibility = Visibility.Visible;
-        }
-
-        /// <summary>
-        /// Hides the given InfoBar if it is currently visible
-        /// </summary>
-        private void HideInfoBar(InfoBar infoBar)
-        {
-            if (infoBar.Visibility == Visibility.Visible)
-            {
-                infoBar.Visibility = Visibility.Collapsed;
-            }
         }
 
         private async void AddFilesAppBarButton_Click(object sender, RoutedEventArgs e)
@@ -288,13 +265,13 @@ namespace CapitalizerUI
 
             if (failedRenameCount == 0)
             {
-                HideInfoBar(errorInfoBar);
-                ShowInfoBar(succesInfoBar, $"Succesfully renamed {CapitalizableItems.Count} items(s).");
+                Utilities.HideInfoBar(errorInfoBar);
+                Utilities.ShowInfoBar(succesInfoBar, $"Succesfully renamed {CapitalizableItems.Count} items(s).");
             }
             else
             {
-                HideInfoBar(succesInfoBar);
-                ShowInfoBar(errorInfoBar, $"Failed to rename {failedRenameCount} items(s). They have been marked in the list. " +
+                Utilities.HideInfoBar(succesInfoBar);
+                Utilities.ShowInfoBar(errorInfoBar, $"Failed to rename {failedRenameCount} items(s). They have been marked in the list. " +
                     $"Please check if these still exist in this location and if they are writeable.");
             }
         }
@@ -343,7 +320,7 @@ namespace CapitalizerUI
 
         private async void AboutAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            string version = Utilities.GetFriendlyVersion(Package.Current.Id.Version);
+            string version = CapitalizerLib.Utilities.GetFriendlyVersion(Package.Current.Id.Version);
             ContentDialog dialog = new ContentDialog();
             dialog.XamlRoot = this.Content.XamlRoot;
             dialog.Title = "About";
