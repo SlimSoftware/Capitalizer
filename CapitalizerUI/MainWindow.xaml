@@ -177,5 +177,12 @@
                        DefaultButton = "Primary"
                        Content = "Do you want to add the folder(s) themself or the containing files?" />
 
+        <ContentDialog x:Name="aboutDialog"
+                       Title = "About"
+                       DefaultButton = "Close"
+                       CloseButtonText = "Close">
+            <TextBlock x:Name="versionText" />
+        </ContentDialog>
+
     </Grid>
 </Window>

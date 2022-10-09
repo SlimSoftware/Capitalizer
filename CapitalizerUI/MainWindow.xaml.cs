@@ -318,13 +318,9 @@ namespace CapitalizerUI
         private async void AboutAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             string version = CapitalizerLib.Utilities.GetFriendlyVersion(Package.Current.Id.Version);
-            ContentDialog dialog = new ContentDialog();
-            dialog.XamlRoot = this.Content.XamlRoot;
-            dialog.Title = "About";
-            dialog.Content = $"Capitalizer v{version}";
-            dialog.CloseButtonText = "Close";
-            dialog.DefaultButton = ContentDialogButton.Close;
-            await dialog.ShowAsync();
+            versionText.Text = $"{Package.Current.DisplayName} v{version}";
+
+            await aboutDialog.ShowAsync();
         }
 
         private void FindStringTextBox_TextChanged(object sender, TextChangedEventArgs e)
