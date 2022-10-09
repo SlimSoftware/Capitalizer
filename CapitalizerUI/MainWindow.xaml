@@ -170,12 +170,12 @@
         </controls:DataGrid>
 
         <ContentDialog x:Name="addFolderMethodChoiceDialog"
-                       Title = "Add folder or contents?"
-                       PrimaryButtonText = "Add folder"
-                       SecondaryButtonText = "Add folder contents"
+                       Title = "Add folder(s) or contents?"
+                       PrimaryButtonText = "Add folder(s)"
+                       SecondaryButtonText = "Add contents"
                        CloseButtonText = "Cancel"
                        DefaultButton = "Primary"
-                       Content = "Do you want to add the folder itself or the files that it contains?" />
+                       Content = "Do you want to add the folder(s) themself or the containing files?" />
 
     </Grid>
 </Window>
