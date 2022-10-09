@@ -168,5 +168,14 @@
                 <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
+
+        <ContentDialog x:Name="addFolderMethodChoiceDialog"
+                       Title = "Add folder or contents?"
+                       PrimaryButtonText = "Add folder"
+                       SecondaryButtonText = "Add folder contents"
+                       CloseButtonText = "Cancel"
+                       DefaultButton = "Primary"
+                       Content = "Do you want to add the folder itself or the files that it contains?" />
+
     </Grid>
 </Window>

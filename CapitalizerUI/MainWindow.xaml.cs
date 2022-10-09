@@ -130,21 +130,16 @@ namespace CapitalizerUI
             }
         }
 
-        private async Task AddFolderAsync(StorageFolder folder)
+        private async Task AddFolderAsync(StorageFolder folder, ContentDialogResult? addMethodChoice = null)
         {
             if (folder != null)
             {
-                ContentDialog dialog = new ContentDialog();
-                dialog.XamlRoot = this.Content.XamlRoot;
-                dialog.Title = "Add folder or contents?";
-                dialog.PrimaryButtonText = "Add folder";
-                dialog.SecondaryButtonText = "Add folder contents";
-                dialog.CloseButtonText = "Cancel";
-                dialog.DefaultButton = ContentDialogButton.Primary;
-                dialog.Content = "Do you want to add the folder itself or the files that it contains?";          
-                var result = await dialog.ShowAsync();
+                if (addMethodChoice == null)
+                {
+                    addMethodChoice = await addFolderMethodChoiceDialog.ShowAsync();
+                }
 
-                if (result == ContentDialogResult.Primary)
+                if (addMethodChoice == ContentDialogResult.Primary)
                 {
                     var folderItem = ItemHelper.FolderToItem(folder, SelectedCapitalizeMode);
 
@@ -156,7 +151,7 @@ namespace CapitalizerUI
                     Utilities.HideInfoBar(errorInfoBar);
                     Utilities.ShowInfoBar(succesInfoBar, $"Added 1 folder.");
                 }
-                else if (result == ContentDialogResult.Secondary)
+                else if (addMethodChoice == ContentDialogResult.Secondary)
                 {
                     var fileItems = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
 
@@ -309,9 +304,11 @@ namespace CapitalizerUI
                     }
                     if (folders.Count > 0)
                     {
+                        var addMethodChoice = await addFolderMethodChoiceDialog.ShowAsync();
+
                         foreach (StorageFolder folder in folders)
                         {
-                            await AddFolderAsync(folder);
+                            await AddFolderAsync(folder, addMethodChoice);
                         }
                     }
                 }
