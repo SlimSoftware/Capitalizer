@@ -306,6 +306,7 @@ namespace CapitalizerUI
         {
             CapitalizableItems.Clear();
             capitalizeItemsDataGrid.ItemsSource = CapitalizableItems;
+            Utilities.HideInfoBar(errorInfoBar);
         }
 
         private void ModeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
