@@ -95,6 +95,9 @@ namespace CapitalizerUI
             return filteredItems.AsReadOnly();
         }
 
+        /// <summary>
+        /// Adds the given StorageFiles to the CapitalizableItems list
+        /// </summary>
         private void AddFiles(IReadOnlyList<StorageFile> storageFiles)
         {
             if (storageFiles != null)
@@ -110,9 +113,7 @@ namespace CapitalizerUI
                     }
 
                     SortItems();
-
-                    Utilities.HideInfoBar(errorInfoBar);
-                    Utilities.ShowInfoBar(succesInfoBar, $"Added {items.Count} file(s).");
+                    ShowAddedItemsInfoBar(CapitalizableType.File, items.Count);
                 }
                 else
                 {
@@ -130,16 +131,38 @@ namespace CapitalizerUI
             }
         }
 
-        private async Task AddFolderAsync(StorageFolder folder, ContentDialogResult? addMethodChoice = null)
+        /// <summary>
+        /// Adds a given StorageFolder as items to the CapitalizableItems list.
+        /// </summary>
+        /// <param name="folder">The StorageFolder to add</param>
+        /// <param name="addMethodChoice">The add method of the folder (add folder itself or its contents)</param>
+        /// <param name="showAddedInfoBar">Whether or not to show an InfoBar message that the items have been added</param>
+        /// <returns></returns>
+        private async Task AddFolderAsync(StorageFolder folder, AddFolderMethod? addMethod = null, bool showAddedInfoBar = true)
         {
             if (folder != null)
             {
-                if (addMethodChoice == null)
+                ContentDialogResult? addMethodChoice = null;
+
+                if (addMethod == null && Settings.AddFolderMethod == null)
                 {
                     addMethodChoice = await addFolderMethodChoiceDialog.ShowAsync();
+
+                    if (addMethodChoice == ContentDialogResult.Primary)
+                    {
+                        addMethod = AddFolderMethod.AddFolder;
+                    }
+                    else if (addMethodChoice == ContentDialogResult.Secondary)
+                    {
+                        addMethod = AddFolderMethod.AddContents;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
 
-                if (addMethodChoice == ContentDialogResult.Primary)
+                if (addMethod == AddFolderMethod.AddFolder || Settings.AddFolderMethod == AddFolderMethod.AddFolder)
                 {
                     var folderItem = ItemHelper.FolderToItem(folder, SelectedCapitalizeMode);
 
@@ -148,10 +171,12 @@ namespace CapitalizerUI
                         CapitalizableItems.Add(folderItem);
                     }
 
-                    Utilities.HideInfoBar(errorInfoBar);
-                    Utilities.ShowInfoBar(succesInfoBar, $"Added 1 folder.");
+                    if (showAddedInfoBar)
+                    {
+                        ShowAddedItemsInfoBar(CapitalizableType.Folder, 1);
+                    }
                 }
-                else if (addMethodChoice == ContentDialogResult.Secondary)
+                else if (addMethod == AddFolderMethod.AddContents || Settings.AddFolderMethod == AddFolderMethod.AddContents)
                 {
                     var fileItems = await ItemHelper.FolderToItemsAsync(folder, SelectedCapitalizeMode);
 
@@ -163,11 +188,65 @@ namespace CapitalizerUI
                         }
                     }
 
-                    Utilities.HideInfoBar(errorInfoBar);
-                    Utilities.ShowInfoBar(succesInfoBar, $"Added {fileItems.Count} file(s).");
+                    if (showAddedInfoBar)
+                    {
+                        ShowAddedItemsInfoBar(CapitalizableType.File, fileItems.Count);
+                    }
                 }
 
+                SaveAddFolderMethod(addMethodChoice);                    
                 SortItems();
+            }
+        }
+
+        /// <summary>
+        /// Saves the add folder method choice to the settings if the user chooses to do so
+        /// </summary>
+        void SaveAddFolderMethod(ContentDialogResult? addMethodChoice)
+        {
+            if (rememberaddFolderMethodCheckBox.IsChecked == true)
+            {
+                if (addMethodChoice == ContentDialogResult.Primary)
+                {
+                    Settings.AddFolderMethod = AddFolderMethod.AddFolder;
+                }
+                else if (addMethodChoice == ContentDialogResult.Secondary)
+                {
+                    Settings.AddFolderMethod = AddFolderMethod.AddContents;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Shows a InfoBar with a message how many items have been added to the list.
+        /// </summary>
+        /// <param name="capitalizableType">The type of the items added</param>
+        /// <param name="itemCount">The number of items added</param>
+        private void ShowAddedItemsInfoBar(CapitalizableType capitalizableType, int itemCount)
+        {
+            Utilities.HideInfoBar(errorInfoBar);
+
+            if (capitalizableType == CapitalizableType.File)
+            {
+                if (itemCount > 1)
+                {
+                    Utilities.ShowInfoBar(succesInfoBar, $"Added {itemCount} files.");
+                } 
+                else
+                {
+                    Utilities.ShowInfoBar(succesInfoBar, "Added 1 file.");
+                }
+            }
+            else
+            {
+                if (itemCount > 1)
+                {
+                    Utilities.ShowInfoBar(succesInfoBar, $"Added {itemCount} folders.");
+                }
+                else
+                {
+                    Utilities.ShowInfoBar(succesInfoBar, "Added 1 folder.");
+                }
             }
         }
 
@@ -304,12 +383,42 @@ namespace CapitalizerUI
                     }
                     if (folders.Count > 0)
                     {
-                        var addMethodChoice = await addFolderMethodChoiceDialog.ShowAsync();
+                        AddFolderMethod? addFolderMethod = Settings.AddFolderMethod;
+                        if (addFolderMethod == null)
+                        {
+                            var addMethodChoice = await addFolderMethodChoiceDialog.ShowAsync();
+                            if (addMethodChoice == ContentDialogResult.Primary)
+                            {
+                                addFolderMethod = AddFolderMethod.AddFolder;
+                            }
+                            else if (addMethodChoice == ContentDialogResult.Secondary)
+                            {
+                                addFolderMethod = AddFolderMethod.AddContents;
+                            }
+                            else
+                            {
+                                return;
+                            }
+
+                            SaveAddFolderMethod(addMethodChoice);
+                        }
+                        
+                        int oldItemCount = CapitalizableItems.Count;          
 
                         foreach (StorageFolder folder in folders)
                         {
-                            await AddFolderAsync(folder, addMethodChoice);
+                            await AddFolderAsync(folder, addFolderMethod, false);
                         }
+
+                        int addedItemCount = CapitalizableItems.Count - oldItemCount;
+                        if (addFolderMethod == AddFolderMethod.AddFolder)
+                        {
+                            ShowAddedItemsInfoBar(CapitalizableType.Folder, addedItemCount);
+                        }
+                        else
+                        {
+                            ShowAddedItemsInfoBar(CapitalizableType.File, addedItemCount);                        
+                        }           
                     }
                 }
             }

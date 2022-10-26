@@ -174,8 +174,15 @@
                        PrimaryButtonText = "Add folder(s)"
                        SecondaryButtonText = "Add contents"
                        CloseButtonText = "Cancel"
-                       DefaultButton = "Primary"
-                       Content = "Do you want to add the folder(s) themself or the containing files?" />
+                       DefaultButton = "Primary">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,0,10">
+                    Do you want to add the folder(s) themself or the containing files?<LineBreak />
+                    Note: if you are adding multiple folders, this will be applied to all those folders.
+                </TextBlock>
+                <CheckBox x:Name="rememberaddFolderMethodCheckBox">Remember my choice until I close Capitalizer</CheckBox>
+            </StackPanel>
+        </ContentDialog>
 
         <ContentDialog x:Name="aboutDialog"
                        Title = "About"
@@ -183,6 +190,5 @@
                        CloseButtonText = "Close">
             <TextBlock x:Name="versionText" />
         </ContentDialog>
-
     </Grid>
 </Window>
