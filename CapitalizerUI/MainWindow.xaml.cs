@@ -232,9 +232,13 @@ namespace CapitalizerUI
                 {
                     Utilities.ShowInfoBar(succesInfoBar, $"Added {itemCount} files.");
                 } 
-                else
+                else if (itemCount == 1)
                 {
                     Utilities.ShowInfoBar(succesInfoBar, "Added 1 file.");
+                }
+                else
+                {
+                    Utilities.ShowInfoBar(errorInfoBar, "Added no files.\nWhen adding a folder, make sure it contains files.");
                 }
             }
             else
@@ -243,9 +247,13 @@ namespace CapitalizerUI
                 {
                     Utilities.ShowInfoBar(succesInfoBar, $"Added {itemCount} folders.");
                 }
-                else
+                else if (itemCount == 1)
                 {
                     Utilities.ShowInfoBar(succesInfoBar, "Added 1 folder.");
+                }
+                else
+                {
+                    Utilities.ShowInfoBar(errorInfoBar, "Could not add folder(s)");
                 }
             }
         }
