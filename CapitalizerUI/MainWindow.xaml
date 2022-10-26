@@ -26,7 +26,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
             <AppBarButton x:Name="addFilesAppBarButton"  Label="Add Files" Click="AddFilesAppBarButton_Click">
                 <AppBarButton.Icon>
-                    <SymbolIcon Symbol="Add" Foreground="Green" />
+                    <SymbolIcon Symbol="OpenFile" Foreground="Gray" />
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="addFolderAppBarButton" Label="Add Folder" Click="AddFolderAppBarButton_Click">
@@ -108,7 +108,7 @@
                     </Core:DataTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
                 <AppBarButton.Icon>
-                    <SymbolIcon Symbol="Accept" Foreground="Green" />
+                    <SymbolIcon Symbol="Accept" Foreground="YellowGreen" />
                 </AppBarButton.Icon>
             </AppBarButton>
         </StackPanel>
