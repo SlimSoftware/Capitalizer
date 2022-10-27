@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Windows.Storage;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace CapitalizerUI
 {
@@ -32,10 +33,24 @@ namespace CapitalizerUI
             this.InitializeComponent();
             Title = Package.Current.DisplayName;
             SetIcon();
-            capitalizeItemsDataGrid.ItemsSource = CapitalizableItems;
 
+            capitalizeItemsDataGrid.ItemsSource = CapitalizableItems;
             findStringTextBox.Text = Settings.FindString;
             replaceWithStringTextBox.Text = Settings.ReplaceWithString;
+        }
+
+        private AppWindow GetAppWindow()
+        {
+            IntPtr windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            WindowId windowId = Win32Interop.GetWindowIdFromWindow(windowHandle);
+            return AppWindow.GetFromWindowId(windowId);
+        }
+
+        private void SetAlwaysOnTop(bool value)
+        {
+            var appWindow = GetAppWindow();
+            var presenter = appWindow.Presenter as OverlappedPresenter;
+            presenter.IsAlwaysOnTop = value;         
         }
 
         /// <summary>
@@ -43,11 +58,10 @@ namespace CapitalizerUI
         /// </summary>
         private void SetIcon()
         {
-            IntPtr windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
-            WindowId windowId = Win32Interop.GetWindowIdFromWindow(windowHandle);
-            var appWindow = AppWindow.GetFromWindowId(windowId);
+            var appWindow = GetAppWindow();
             appWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\capitalizer.ico"));
         }
+
 
         /// <summary>
         /// Sorts the current CapitalizableItems in the DataGrid
@@ -204,7 +218,7 @@ namespace CapitalizerUI
         /// </summary>
         void SaveAddFolderMethod(ContentDialogResult? addMethodChoice)
         {
-            if (rememberaddFolderMethodCheckBox.IsChecked == true)
+            if (rememberAddFolderMethodCheckBox.IsChecked == true)
             {
                 if (addMethodChoice == ContentDialogResult.Primary)
                 {
@@ -453,6 +467,12 @@ namespace CapitalizerUI
             string newText = (sender as TextBox).Text;
             Settings.ReplaceWithString = newText;
             CapitalizeAllItems();
+        }
+
+        private void AlwaysOnTopToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            var toggleButton = (ToggleButton)sender;
+            SetAlwaysOnTop(toggleButton.IsChecked == true);
         }
     }
 }
