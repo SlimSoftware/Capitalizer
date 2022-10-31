@@ -474,5 +474,16 @@ namespace CapitalizerUI
             var toggleButton = (ToggleButton)sender;
             SetAlwaysOnTop(toggleButton.IsChecked == true);
         }
+
+        private async void ThirdPartyNoticesHyperlinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            string noticeFile = @"Assets\ThirdPartyNotices.txt";
+            var file = await Package.Current.InstalledLocation.GetFileAsync(noticeFile);
+
+            if (file != null)
+            {
+                await Windows.System.Launcher.LaunchFileAsync(file);
+            }
+        }
     }
 }

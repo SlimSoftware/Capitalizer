@@ -192,7 +192,13 @@
                        Title = "About"
                        DefaultButton = "Close"
                        CloseButtonText = "Close">
-            <TextBlock x:Name="versionText" />
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Name="versionText" />
+                <HyperlinkButton Content="Release Notes" NavigateUri="https://github.com/SlimSoftware/Capitalizer/releases" />
+                <TextBlock Margin="0,10">Open Source Software by Slim Software</TextBlock>
+                <HyperlinkButton Content="Slim Software Website" NavigateUri="https://www.slimsoft.tk" />
+                <HyperlinkButton x:Name="thirdPartyNoticesHyperlinkButton" Content="Third-Party Notices/Credits" Click="ThirdPartyNoticesHyperlinkButton_Click" />
+            </StackPanel>
         </ContentDialog>
     </Grid>
 </Window>
