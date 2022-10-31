@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CapitalizerUI", "Capitalize
 		{987EA615-D82C-4EFB-A4BC-3CAF06C293C5} = {987EA615-D82C-4EFB-A4BC-3CAF06C293C5}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapitalizerLib", "CapitalizerLib\CapitalizerLib.csproj", "{987EA615-D82C-4EFB-A4BC-3CAF06C293C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CapitalizerLib", "CapitalizerLib\CapitalizerLib.csproj", "{987EA615-D82C-4EFB-A4BC-3CAF06C293C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
