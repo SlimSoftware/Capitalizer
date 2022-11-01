@@ -149,7 +149,7 @@
             SelectionMode="Extended"
             RowGroupHeaderPropertyNameAlternative="Range">
             <controls:DataGrid.Columns>
-                <controls:DataGridTemplateColumn Width="32">
+                <controls:DataGridTemplateColumn Width="28">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <SymbolIcon Symbol="{Binding Path=Type, Converter={StaticResource ItemTypeIconConverter}}"
@@ -158,7 +158,7 @@
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
 
-                <controls:DataGridTemplateColumn>
+                <controls:DataGridTemplateColumn Width="28">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <SymbolIcon Symbol="{Binding Path=Status, Converter={StaticResource ItemStatusIconConverter}}"
@@ -167,9 +167,9 @@
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
 
-                <controls:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" />
-                <controls:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" />
-                <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" />
+                <controls:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" FontSize="14" />
+                <controls:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" FontSize="14" />
+                <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" FontSize="14" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
 
