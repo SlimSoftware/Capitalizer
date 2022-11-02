@@ -113,14 +113,7 @@
             </AppBarButton>
         </StackPanel>
 
-        <InfoBar x:Name="errorInfoBar" IsClosable="True" Severity="Error"
-                 Title="Error" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
-                 Canvas.ZIndex="2" Visibility="Collapsed" IsOpen="True" MaxWidth="500" />
-        <InfoBar x:Name="succesInfoBar" IsClosable="True" Severity="Success"
-                 Title="Succes" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
-                 Canvas.ZIndex="3" Visibility="Collapsed" IsOpen="True" MaxWidth="500" />
-
-        <StackPanel Orientation="Horizontal" Grid.Column="2">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
             <ToggleButton x:Name="alwaysOnTopToggleButton"
                           ToolTipService.ToolTip="Keep window on top" Click="AlwaysOnTopToggleButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEE49;" />
@@ -129,6 +122,11 @@
                     Click="AboutAppBarButton_Click" Margin="10,0">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" />
             </Button>
+
+            <InfoBar x:Name="errorInfoBar" Title="Error" IsClosable="True" Severity="Error"
+                  Visibility="Collapsed" IsOpen="True" MaxWidth="500" Margin="0,5,0,0"/>
+            <InfoBar x:Name="succesInfoBar" Title="Succes" IsClosable="True" Severity="Success"
+                  Visibility="Collapsed" IsOpen="True" MaxWidth="500" Margin="0,5,0,0"/>
         </StackPanel>
 
         <controls:DataGrid
