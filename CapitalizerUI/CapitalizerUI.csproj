@@ -17,6 +17,7 @@
     <RepositoryUrl>https://github.com/SlimSoftware/Capitalizer</RepositoryUrl>
     <PackageIcon>StoreLogo.scale-400.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Debug\**" />
