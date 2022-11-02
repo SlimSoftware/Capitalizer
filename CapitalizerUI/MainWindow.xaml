@@ -6,7 +6,7 @@
     xmlns:local="using:CapitalizerUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:CommunityToolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" 
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d">
@@ -129,7 +129,7 @@
                   Visibility="Collapsed" IsOpen="True" MaxWidth="500" Margin="0,5,0,0"/>
         </StackPanel>
 
-        <controls:DataGrid
+        <CommunityToolkit:DataGrid
             x:Name="capitalizeItemsDataGrid"
             Grid.Row="1"
             Grid.Column="0"
@@ -146,30 +146,30 @@
             RowDetailsVisibilityMode="Collapsed"
             SelectionMode="Extended"
             RowGroupHeaderPropertyNameAlternative="Range">
-            <controls:DataGrid.Columns>
-                <controls:DataGridTemplateColumn Width="28">
-                    <controls:DataGridTemplateColumn.CellTemplate>
+            <CommunityToolkit:DataGrid.Columns>
+                <CommunityToolkit:DataGridTemplateColumn Width="28">
+                    <CommunityToolkit:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <SymbolIcon Symbol="{Binding Path=Type, Converter={StaticResource ItemTypeIconConverter}}"
                                         Foreground="{Binding Path=Type, Converter={StaticResource ItemTypeColorConverter}}" />
                         </DataTemplate>
-                    </controls:DataGridTemplateColumn.CellTemplate>
-                </controls:DataGridTemplateColumn>
+                    </CommunityToolkit:DataGridTemplateColumn.CellTemplate>
+                </CommunityToolkit:DataGridTemplateColumn>
 
-                <controls:DataGridTemplateColumn Width="28">
-                    <controls:DataGridTemplateColumn.CellTemplate>
+                <CommunityToolkit:DataGridTemplateColumn Width="28">
+                    <CommunityToolkit:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <SymbolIcon Symbol="{Binding Path=Status, Converter={StaticResource ItemStatusIconConverter}}"
                                         Foreground="{Binding Path=Status, Converter={StaticResource ItemStatusColorConverter}}" />
                         </DataTemplate>
-                    </controls:DataGridTemplateColumn.CellTemplate>
-                </controls:DataGridTemplateColumn>
+                    </CommunityToolkit:DataGridTemplateColumn.CellTemplate>
+                </CommunityToolkit:DataGridTemplateColumn>
 
-                <controls:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" FontSize="14" />
-                <controls:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" FontSize="14" />
-                <controls:DataGridTextColumn Header="Path" Binding="{Binding Path}" FontSize="14" />
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
+                <CommunityToolkit:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" FontSize="14" />
+                <CommunityToolkit:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" FontSize="14" />
+                <CommunityToolkit:DataGridTextColumn Header="Path" Binding="{Binding Path}" FontSize="14" />
+            </CommunityToolkit:DataGrid.Columns>
+        </CommunityToolkit:DataGrid>
 
         <ContentDialog x:Name="addFolderMethodChoiceDialog"
                        Title = "Add folder(s) or contents?"
