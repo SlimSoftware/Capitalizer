@@ -116,7 +116,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
             <ToggleButton x:Name="alwaysOnTopToggleButton"
                           ToolTipService.ToolTip="Keep window on top" Click="AlwaysOnTopToggleButton_Click">
-                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEE49;" />
+                <SymbolIcon Symbol="NewWindow" />
             </ToggleButton>
             <Button x:Name="aboutButton" ToolTipService.ToolTip="About Capitalizer" 
                     Click="AboutAppBarButton_Click" Margin="10,0">
