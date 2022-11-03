@@ -151,7 +151,8 @@
                     <CommunityToolkit:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <SymbolIcon Symbol="{Binding Path=Type, Converter={StaticResource ItemTypeIconConverter}}"
-                                        Foreground="{Binding Path=Type, Converter={StaticResource ItemTypeColorConverter}}" />
+                                        Foreground="{Binding Path=Type, Converter={StaticResource ItemTypeColorConverter}}"
+                                        ToolTipService.ToolTip="{Binding Type}" />
                         </DataTemplate>
                     </CommunityToolkit:DataGridTemplateColumn.CellTemplate>
                 </CommunityToolkit:DataGridTemplateColumn>
@@ -160,7 +161,8 @@
                     <CommunityToolkit:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <SymbolIcon Symbol="{Binding Path=Status, Converter={StaticResource ItemStatusIconConverter}}"
-                                        Foreground="{Binding Path=Status, Converter={StaticResource ItemStatusColorConverter}}" />
+                                        Foreground="{Binding Path=Status, Converter={StaticResource ItemStatusColorConverter}}"
+                                        ToolTipService.ToolTip="{Binding Status, Converter={StaticResource ItemStatusTooltipConverter}}" />
                         </DataTemplate>
                     </CommunityToolkit:DataGridTemplateColumn.CellTemplate>
                 </CommunityToolkit:DataGridTemplateColumn>

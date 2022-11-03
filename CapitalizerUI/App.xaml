@@ -24,6 +24,7 @@
             <converters:ItemTypeColorConverter x:Key="ItemTypeColorConverter" />
             <converters:ItemStatusIconConverter x:Key="ItemStatusIconConverter" />
             <converters:ItemStatusColorConverter x:Key="ItemStatusColorConverter" />
+            <converters:ItemStatusTooltipConverter x:Key="ItemStatusTooltipConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
