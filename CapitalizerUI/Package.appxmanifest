@@ -8,7 +8,7 @@
 
   <Identity
     Name="SlimSoftware.Capitalizer"
-    Publisher="CN=Mark"
+    Publisher="CN=Slim Software"
     Version="2.0.0.0" />
 
   <Properties>
