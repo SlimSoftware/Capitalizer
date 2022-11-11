@@ -1,0 +1,204 @@
+﻿<Window
+    x:Class="CapitalizerUI.MainWindow"
+    x:Name="mainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CapitalizerUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:CommunityToolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" 
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    mc:Ignorable="d">
+
+    <Grid x:Name="mainGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+          AllowDrop="True" Drop="MainGrid_Drop" DragOver="MainGrid_DragOver">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+            <AppBarButton x:Name="addFilesAppBarButton"  Label="Add Files" Click="AddFilesAppBarButton_Click">
+                <AppBarButton.Icon>
+                    <SymbolIcon Symbol="OpenFile" Foreground="Gray" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="addFolderAppBarButton" Label="Add Folder" Click="AddFolderAppBarButton_Click">
+                <AppBarButton.Icon>
+                    <SymbolIcon Symbol="NewFolder" Foreground="Goldenrod" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="deleteAppBarButton" Label="Delete" Click="DeleteAppBarButton_Click">
+                <Interactivity:Interaction.Behaviors>
+                    <Core:DataTriggerBehavior Binding="{Binding SelectedIndex, ElementName=capitalizeItemsDataGrid}" 
+                                              ComparisonCondition="GreaterThanOrEqual" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAppBarButton}"
+                            PropertyName="IsEnabled" Value="True" />
+                    </Core:DataTriggerBehavior>
+                    <Core:DataTriggerBehavior Binding="{Binding SelectedIndex, ElementName=capitalizeItemsDataGrid}" 
+                                              ComparisonCondition="LessThan" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAppBarButton}" 
+                                                   PropertyName="IsEnabled" Value="False" />
+                    </Core:DataTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+                <AppBarButton.Icon>
+                    <SymbolIcon Symbol="Delete" Foreground="Red" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="deleteAllAppBarButton" Label="Delete All" Click="DeleteAllAppBarButton_Click">
+                <Interactivity:Interaction.Behaviors>
+                    <Core:DataTriggerBehavior Binding="{Binding ItemsSource.Count, ElementName=capitalizeItemsDataGrid}"
+                                              ComparisonCondition="GreaterThan" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAllAppBarButton}" 
+                            PropertyName="IsEnabled" Value="True" />
+                    </Core:DataTriggerBehavior>
+                    <Core:DataTriggerBehavior Binding="{Binding ItemsSource.Count, ElementName=capitalizeItemsDataGrid}"
+                                              ComparisonCondition="Equal" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=deleteAllAppBarButton}" 
+                            PropertyName="IsEnabled" Value="False" />
+                    </Core:DataTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+                <AppBarButton.Icon>
+                    <SymbolIcon Symbol="Delete" Foreground="Red" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+
+            <StackPanel Orientation="Vertical" Margin="5,2">
+                <TextBlock>Mode</TextBlock>
+                <ComboBox x:Name="modeComboBox" MinWidth="260" SelectedIndex="0"
+                          SelectionChanged="ModeComboBox_SelectionChanged">
+                    <x:String>Capitalize Every Word</x:String>
+                    <x:String>Like in a sentence</x:String>
+                    <x:String>all lowercase</x:String>
+                    <x:String>ALL UPPERCASE</x:String>
+                    <x:String>Remove extra spaces</x:String>
+                    <x:String>Find and replace</x:String>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel x:Name="findReplacePanel" Orientation="Horizontal" 
+                        Visibility="Collapsed" Margin="5,2">
+                <StackPanel Orientation="Vertical" Margin="5,0">
+                    <TextBlock>Find</TextBlock>
+                    <TextBox x:Name="findStringTextBox" TextChanged="FindStringTextBox_TextChanged" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock>Replace with</TextBlock>
+                    <TextBox x:Name="replaceWithStringTextBox" TextChanged="ReplaceWithStringTextBox_TextChanged" />
+                </StackPanel>
+            </StackPanel>
+
+            <AppBarButton x:Name="renameAppBarButton" Label="Rename" Click="RenameAppBarButton_Click">
+                <Interactivity:Interaction.Behaviors>
+                    <Core:DataTriggerBehavior Binding="{Binding ItemsSource.Count, ElementName=capitalizeItemsDataGrid}"
+                                              ComparisonCondition="Equal" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=renameAppBarButton}" 
+                            PropertyName="IsEnabled" Value="False" />
+                    </Core:DataTriggerBehavior>
+                    <Core:DataTriggerBehavior Binding="{Binding ItemsSource.Count, ElementName=capitalizeItemsDataGrid}"
+                                              ComparisonCondition="GreaterThan" Value="0">
+                        <Core:ChangePropertyAction TargetObject="{Binding ElementName=renameAppBarButton}" 
+                            PropertyName="IsEnabled" Value="True" />
+                    </Core:DataTriggerBehavior>
+                </Interactivity:Interaction.Behaviors>
+                <AppBarButton.Icon>
+                    <SymbolIcon Symbol="Accept" Foreground="YellowGreen" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+            <ToggleButton x:Name="alwaysOnTopToggleButton"
+                          ToolTipService.ToolTip="Keep window on top" Click="AlwaysOnTopToggleButton_Click">
+                <SymbolIcon Symbol="NewWindow" />
+            </ToggleButton>
+            <Button x:Name="aboutButton" ToolTipService.ToolTip="About Capitalizer" 
+                    Click="AboutAppBarButton_Click" Margin="10,0">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;" />
+            </Button>
+
+            <InfoBar x:Name="errorInfoBar" Title="Error" IsClosable="True" Severity="Error"
+                  Visibility="Collapsed" IsOpen="True" MaxWidth="500" Margin="0,5,0,0"/>
+            <InfoBar x:Name="succesInfoBar" Title="Succes" IsClosable="True" Severity="Success"
+                  Visibility="Collapsed" IsOpen="True" MaxWidth="500" Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <CommunityToolkit:DataGrid
+            x:Name="capitalizeItemsDataGrid"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            AutoGenerateColumns="False"
+            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+            CanUserSortColumns="False"
+            CanUserReorderColumns="False"
+            CanUserResizeColumns="True"
+            ColumnHeaderHeight="32"
+            GridLinesVisibility="None"
+            HeadersVisibility="Column"
+            IsReadOnly="True"
+            RowDetailsVisibilityMode="Collapsed"
+            SelectionMode="Extended"
+            RowGroupHeaderPropertyNameAlternative="Range">
+            <CommunityToolkit:DataGrid.Columns>
+                <CommunityToolkit:DataGridTemplateColumn Width="28">
+                    <CommunityToolkit:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <SymbolIcon Symbol="{Binding Path=Type, Converter={StaticResource ItemTypeIconConverter}}"
+                                        Foreground="{Binding Path=Type, Converter={StaticResource ItemTypeColorConverter}}"
+                                        ToolTipService.ToolTip="{Binding Type}" />
+                        </DataTemplate>
+                    </CommunityToolkit:DataGridTemplateColumn.CellTemplate>
+                </CommunityToolkit:DataGridTemplateColumn>
+
+                <CommunityToolkit:DataGridTemplateColumn Width="28">
+                    <CommunityToolkit:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <SymbolIcon Symbol="{Binding Path=Status, Converter={StaticResource ItemStatusIconConverter}}"
+                                        Foreground="{Binding Path=Status, Converter={StaticResource ItemStatusColorConverter}}"
+                                        ToolTipService.ToolTip="{Binding Status, Converter={StaticResource ItemStatusTooltipConverter}}" />
+                        </DataTemplate>
+                    </CommunityToolkit:DataGridTemplateColumn.CellTemplate>
+                </CommunityToolkit:DataGridTemplateColumn>
+
+                <CommunityToolkit:DataGridTextColumn Header="Old Name" Binding="{Binding OldName}" FontSize="14" />
+                <CommunityToolkit:DataGridTextColumn Header="New Name" Binding="{Binding NewName}" FontSize="14" />
+                <CommunityToolkit:DataGridTextColumn Header="Path" Binding="{Binding Path}" FontSize="14" />
+            </CommunityToolkit:DataGrid.Columns>
+        </CommunityToolkit:DataGrid>
+
+        <ContentDialog x:Name="addFolderMethodChoiceDialog"
+                       Title = "Add folder(s) or contents?"
+                       PrimaryButtonText = "Add folder(s)"
+                       SecondaryButtonText = "Add contents"
+                       CloseButtonText = "Cancel"
+                       DefaultButton = "Primary">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="0,0,0,10">
+                    Do you want to add the folder(s) themself or the containing files?<LineBreak />
+                    Note: if you are adding multiple folders, this will be applied to all those folders.
+                </TextBlock>
+                <CheckBox x:Name="rememberAddFolderMethodCheckBox">Remember my choice until I close Capitalizer</CheckBox>
+            </StackPanel>
+        </ContentDialog>
+
+        <ContentDialog x:Name="aboutDialog"
+                       Title = "About"
+                       DefaultButton = "Close"
+                       CloseButtonText = "Close">
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Name="versionText" />
+                <HyperlinkButton Content="Release Notes" NavigateUri="https://github.com/SlimSoftware/Capitalizer/releases" />
+                <TextBlock Margin="0,10">Open Source Software by Slim Software</TextBlock>
+                <HyperlinkButton Content="Slim Software Website" NavigateUri="https://www.slimsoft.tk" />
+                <HyperlinkButton x:Name="thirdPartyNoticesHyperlinkButton" Content="Third-Party Notices/Credits" Click="ThirdPartyNoticesHyperlinkButton_Click" />
+            </StackPanel>
+        </ContentDialog>
+    </Grid>
+</Window>

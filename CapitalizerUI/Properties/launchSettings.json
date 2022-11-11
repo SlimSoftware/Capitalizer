@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Capitalizer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Capitalizer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

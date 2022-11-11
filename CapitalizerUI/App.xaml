@@ -1,0 +1,30 @@
+﻿<Application
+    x:Class="CapitalizerUI.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CapitalizerUI"
+    xmlns:converters="using:CapitalizerUI.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+
+                <ResourceDictionary>
+                    <!-- Override system generated accent colors -->
+                    <Color x:Key="SystemAccentColorLight1">#FFBD20FF</Color>
+                    <Color x:Key="SystemAccentColorLight2">#FFC73FFF</Color>
+                    <Color x:Key="SystemAccentColorLight3">#FFD25FFF</Color>
+                    <Color x:Key="SystemAccentColorDark1">#FF9F00E8</Color>
+                    <Color x:Key="SystemAccentColorDark2">#FF8C00D2</Color>
+                    <Color x:Key="SystemAccentColorDark3">#FF7900BB</Color>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <converters:ItemTypeIconConverter x:Key="ItemTypeIconConverter" />
+            <converters:ItemTypeColorConverter x:Key="ItemTypeColorConverter" />
+            <converters:ItemStatusIconConverter x:Key="ItemStatusIconConverter" />
+            <converters:ItemStatusColorConverter x:Key="ItemStatusColorConverter" />
+            <converters:ItemStatusTooltipConverter x:Key="ItemStatusTooltipConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
