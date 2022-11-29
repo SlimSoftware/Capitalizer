@@ -108,7 +108,7 @@
                     </Core:DataTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
                 <AppBarButton.Icon>
-                    <SymbolIcon Symbol="Accept" Foreground="YellowGreen" />
+                    <SymbolIcon Symbol="Accept" Foreground="DodgerBlue" />
                 </AppBarButton.Icon>
             </AppBarButton>
         </StackPanel>

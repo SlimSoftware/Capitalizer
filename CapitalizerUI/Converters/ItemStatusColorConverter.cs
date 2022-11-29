@@ -20,7 +20,7 @@ namespace CapitalizerUI.Converters
                 }
                 else if (itemStatus == CapitalizableStatus.Succes)
                 {
-                    return new SolidColorBrush(Colors.Green);
+                    return new SolidColorBrush(Colors.DodgerBlue);
                 }
                 else
                 {
