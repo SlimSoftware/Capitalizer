@@ -1,11 +1,12 @@
-﻿using CapitalizerLib.Models;
+﻿using Capitalizer.Core.Enums;
+using Capitalizer.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using System.Linq;
 
-namespace CapitalizerLib
+namespace Capitalizer.Core.Helpers
 {
     public static class ItemHelper
     {
@@ -63,10 +64,9 @@ namespace CapitalizerLib
         /// </summary>
         public static IEnumerable<CapitalizableItem> SortItems(IList<CapitalizableItem> items)
         {
-            var sortedItems = from item in items
-                              orderby item.NewName ascending
-                              orderby item.OldName ascending
-                              select item;
+            var sortedItems = items.OrderBy(item => item.OldName)
+                .ThenBy(item => item.NewName);
+
             return sortedItems;
         }
     }

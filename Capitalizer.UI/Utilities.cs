@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 
-namespace CapitalizerUI
+namespace Capitalizer.UI
 {
     static internal class Utilities
     {

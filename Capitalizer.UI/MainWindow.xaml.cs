@@ -1,20 +1,23 @@
-﻿using Microsoft.UI;
+﻿using Capitalizer.Core;
+using Capitalizer.Core.Enums;
+using Capitalizer.Core.Helpers;
+using Capitalizer.Core.Models;
+using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using Windows.ApplicationModel;
-using Windows.Storage.Pickers;
-using CapitalizerLib.Models;
-using CapitalizerLib;
-using Microsoft.UI.Xaml.Controls;
-using Windows.ApplicationModel.DataTransfer;
-using System.Collections.Generic;
-using Windows.Storage;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.UI.Xaml.Controls.Primitives;
+using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Utilities = Capitalizer.UI.Utilities;
 
 namespace CapitalizerUI
 {
@@ -23,16 +26,18 @@ namespace CapitalizerUI
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        public ObservableCollection<CapitalizableItem> CapitalizableItems { get; set; } = 
+        public ObservableCollection<CapitalizableItem> CapitalizableItems { get; set; } =
             new ObservableCollection<CapitalizableItem>();
 
         public CapitalizeMode SelectedCapitalizeMode = CapitalizeMode.EveryWord;
 
         public MainWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             Title = Package.Current.DisplayName;
-            SetIcon();
+
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(titleBar);
 
             capitalizeItemsDataGrid.ItemsSource = CapitalizableItems;
             findStringTextBox.Text = Settings.FindString;
@@ -50,7 +55,7 @@ namespace CapitalizerUI
         {
             var appWindow = GetAppWindow();
             var presenter = appWindow.Presenter as OverlappedPresenter;
-            presenter.IsAlwaysOnTop = value;         
+            presenter.IsAlwaysOnTop = value;
         }
 
         /// <summary>
@@ -100,7 +105,7 @@ namespace CapitalizerUI
 
             foreach (T item in storageItems)
             {
-                if (IsItemAlreadyAdded(item.Path)) 
+                if (IsItemAlreadyAdded(item.Path))
                 {
                     filteredItems.Remove(item);
                 }
@@ -134,14 +139,14 @@ namespace CapitalizerUI
                     Utilities.HideInfoBar(succesInfoBar);
 
                     if (storageFiles.Count > 1)
-                    {                      
+                    {
                         Utilities.ShowInfoBar(errorInfoBar, "These files are already added.");
-                    } 
+                    }
                     else
                     {
                         Utilities.ShowInfoBar(errorInfoBar, "This file is already added.");
-                    }               
-                }       
+                    }
+                }
             }
         }
 
@@ -208,7 +213,7 @@ namespace CapitalizerUI
                     }
                 }
 
-                SaveAddFolderMethod(addMethodChoice);                    
+                SaveAddFolderMethod(addMethodChoice);
                 SortItems();
             }
         }
@@ -245,7 +250,7 @@ namespace CapitalizerUI
                 if (itemCount > 1)
                 {
                     Utilities.ShowInfoBar(succesInfoBar, $"Added {itemCount} files.");
-                } 
+                }
                 else if (itemCount == 1)
                 {
                     Utilities.ShowInfoBar(succesInfoBar, "Added 1 file.");
@@ -304,7 +309,7 @@ namespace CapitalizerUI
 
             var folder = await picker.PickSingleFolderAsync();
             await AddFolderAsync(folder);
-        }           
+        }
 
         private void DeleteAppBarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -351,8 +356,8 @@ namespace CapitalizerUI
                 try
                 {
                     await item.Rename();
-                    
-                } 
+
+                }
                 catch
                 {
                     item.Status = CapitalizableStatus.Failed;
@@ -363,7 +368,7 @@ namespace CapitalizerUI
             if (failedRenameCount == 0)
             {
                 Utilities.HideInfoBar(errorInfoBar);
-                Utilities.ShowInfoBar(succesInfoBar, $"Succesfully renamed {CapitalizableItems.Count} items(s).");
+                Utilities.ShowInfoBar(succesInfoBar, $"Succesfully renamed {CapitalizableItems.Count} item(s).");
             }
             else
             {
@@ -425,8 +430,8 @@ namespace CapitalizerUI
 
                             SaveAddFolderMethod(addMethodChoice);
                         }
-                        
-                        int oldItemCount = CapitalizableItems.Count;          
+
+                        int oldItemCount = CapitalizableItems.Count;
 
                         foreach (StorageFolder folder in folders)
                         {
@@ -440,8 +445,8 @@ namespace CapitalizerUI
                         }
                         else
                         {
-                            ShowAddedItemsInfoBar(CapitalizableType.File, addedItemCount);                        
-                        }           
+                            ShowAddedItemsInfoBar(CapitalizableType.File, addedItemCount);
+                        }
                     }
                 }
             }
@@ -449,7 +454,7 @@ namespace CapitalizerUI
 
         private async void AboutAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            string version = CapitalizerLib.Utilities.GetFriendlyVersion(Package.Current.Id.Version);
+            string version = Capitalizer.Core.Utilities.GetFriendlyVersion(Package.Current.Id.Version);
             versionText.Text = $"{Package.Current.DisplayName} v{version}";
 
             await aboutDialog.ShowAsync();
@@ -463,7 +468,7 @@ namespace CapitalizerUI
         }
 
         private void ReplaceWithStringTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        { 
+        {
             string newText = (sender as TextBox).Text;
             Settings.ReplaceWithString = newText;
             CapitalizeAllItems();
@@ -477,13 +482,19 @@ namespace CapitalizerUI
 
         private async void ThirdPartyNoticesHyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
-            string noticeFile = @"Assets\ThirdPartyNotices.txt";
+            string noticeFile = @"Assets\third-party-notices.txt";
             var file = await Package.Current.InstalledLocation.GetFileAsync(noticeFile);
 
             if (file != null)
             {
                 await Windows.System.Launcher.LaunchFileAsync(file);
             }
+        }
+
+        private void CapitalizeItemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            deleteAppBarButton.IsEnabled = capitalizeItemsDataGrid.SelectedIndex >= 0;
+            deleteAllAppBarButton.IsEnabled = capitalizeItemsDataGrid.SelectedIndex >= 0;
         }
     }
 }

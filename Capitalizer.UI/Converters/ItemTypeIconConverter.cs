@@ -1,12 +1,11 @@
-﻿using CapitalizerLib.Models;
-using Microsoft.UI;
+﻿using Capitalizer.Core.Enums;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media;
 using System;
 
-namespace CapitalizerUI.Converters
+namespace Capitalizer.UI.Converters
 {
-    internal class ItemTypeColorConverter : IValueConverter
+    public partial class ItemTypeIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -16,22 +15,31 @@ namespace CapitalizerUI.Converters
 
                 if (itemType == CapitalizableType.Folder)
                 {
-                    return new SolidColorBrush(Colors.Goldenrod);
+                    return Symbol.Folder;
                 }
                 else
                 {
-                    return new SolidColorBrush(Colors.Gray);
+                    return Symbol.Page;
                 }
             }
             catch
             {
-                return new SolidColorBrush(Colors.Gray);
+                return Symbol.Page;
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            throw new NotImplementedException();
+            Symbol symbol = (Symbol)value;
+
+            if (symbol == Symbol.Folder)
+            {
+                return CapitalizableType.Folder;
+            }
+            else
+            {
+                return CapitalizableType.File;
+            }
         }
     }
 }

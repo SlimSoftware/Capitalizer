@@ -1,8 +1,7 @@
-﻿
-namespace CapitalizerLib
-{
-    public enum AddFolderMethod { AddFolder, AddContents };
+﻿using Capitalizer.Core.Enums;
 
+namespace Capitalizer.Core
+{
     public static class Settings
     {
         /// <summary>

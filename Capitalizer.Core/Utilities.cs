@@ -1,6 +1,6 @@
 ﻿using Windows.ApplicationModel;
 
-namespace CapitalizerLib
+namespace Capitalizer.Core
 {
     public static class Utilities
     {

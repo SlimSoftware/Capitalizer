@@ -1,40 +1,39 @@
-﻿using System;
+﻿using Capitalizer.Core.Enums;
+using Capitalizer.Core.Helpers;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace CapitalizerLib.Models
+namespace Capitalizer.Core.Models
 {
-    public enum CapitalizableType { File, Folder };
-    public enum CapitalizableStatus { Pending, Succes, Failed };
-
     public class CapitalizableItem : INotifyPropertyChanged
     {
         public string OldName { get; set; }
 
         private string newName;
-        public string NewName 
-        { 
-            get 
+        public string NewName
+        {
+            get
             {
                 if (newName != null)
                     return newName;
                 else
                     return "(no change)";
-            } 
+            }
             set
             {
                 newName = value;
                 OnPropertyChanged();
-            } 
+            }
         }
 
         private string path;
-        public string Path 
+        public string Path
         {
             get { return path; }
-            set 
+            set
             {
                 path = value;
                 OnPropertyChanged();
@@ -44,9 +43,9 @@ namespace CapitalizerLib.Models
         public CapitalizableType Type { get; set; }
 
         private CapitalizableStatus status = CapitalizableStatus.Pending;
-        public CapitalizableStatus Status 
-        { 
-            get { return status; } 
+        public CapitalizableStatus Status
+        {
+            get { return status; }
             set
             {
                 status = value;
@@ -63,7 +62,7 @@ namespace CapitalizerLib.Models
         {
             if (NewName != null)
             {
-                try 
+                try
                 {
                     IStorageItem storageItem;
                     if (Type == CapitalizableType.File)
@@ -79,7 +78,7 @@ namespace CapitalizerLib.Models
                     Path = storageItem.Path;
                     Status = CapitalizableStatus.Succes;
                 }
-                catch 
+                catch
                 {
                     Status = CapitalizableStatus.Failed;
                     throw new Exception("Could not find item to rename");
@@ -102,7 +101,7 @@ namespace CapitalizerLib.Models
                     Status = CapitalizableStatus.Pending;
                 }
             }
-            
+
             if (OldName == NewName)
             {
                 NewName = null;

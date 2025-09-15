@@ -1,18 +1,9 @@
-﻿using System.IO;
+﻿using Capitalizer.Core.Enums;
+using System.IO;
 using System.Text.RegularExpressions;
 
-namespace CapitalizerLib
+namespace Capitalizer.Core.Helpers
 {
-    public enum CapitalizeMode
-    {
-        EveryWord,
-        LikeSentence,
-        LowerCase,
-        UpperCase,
-        RemoveExtraSpaces,
-        FindReplace
-    };
-
     public static class CapitalizeHelper
     {
         public static string Capitalize(string fileName, CapitalizeMode mode)

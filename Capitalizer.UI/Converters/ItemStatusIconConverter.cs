@@ -1,11 +1,11 @@
-﻿using CapitalizerLib.Models;
+﻿using Capitalizer.Core.Enums;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using System;
 
-namespace CapitalizerUI.Converters
+namespace Capitalizer.UI.Converters
 {
-    internal class ItemStatusIconConverter : IValueConverter
+    public partial class ItemStatusIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

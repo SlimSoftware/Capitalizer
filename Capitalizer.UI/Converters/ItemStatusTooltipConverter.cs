@@ -1,12 +1,10 @@
-﻿using CapitalizerLib.Models;
-using Microsoft.UI;
+﻿using Capitalizer.Core.Enums;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media;
 using System;
 
-namespace CapitalizerUI.Converters
+namespace Capitalizer.UI.Converters
 {
-    internal class ItemStatusTooltipConverter : IValueConverter
+    public partial class ItemStatusTooltipConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
